@@ -1,0 +1,6 @@
+﻿services:
+  myfinances.api:
+    image: myfinances.api
+    build:
+      context: .
+      dockerfile: MyFinances.Api/Dockerfile
