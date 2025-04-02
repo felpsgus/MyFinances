@@ -6,4 +6,20 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <Folder Include="Authentication\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.13"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.2"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.2"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MyFinances.Application\MyFinances.Application.csproj"/>
+        <ProjectReference Include="..\MyFinances.Domain\MyFinances.Domain.csproj"/>
+    </ItemGroup>
+
 </Project>

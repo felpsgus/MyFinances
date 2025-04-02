@@ -6,4 +6,14 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0"/>
+        <PackageReference Include="MediatR" Version="12.4.1"/>
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MyFinances.Domain\MyFinances.Domain.csproj"/>
+    </ItemGroup>
+
 </Project>
