@@ -25,10 +25,7 @@ public static class EndpointsExtensions
 
         IEndpointRouteBuilder builder = routeGroupBuilder is null ? app : routeGroupBuilder;
 
-        foreach (IEndpoint endpoint in endpoints)
-        {
-            endpoint.MapEndpoint(builder);
-        }
+        foreach (var endpoint in endpoints) endpoint.MapEndpoint(builder);
 
         return app;
     }

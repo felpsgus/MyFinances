@@ -9,9 +9,15 @@ public abstract class Entity
     public DateTimeOffset UpdatedAt { get; private set; } = DateTimeOffset.UtcNow;
     public bool Deleted { get; private set; } = false;
 
-    public void Delete() => Deleted = true;
+    public void Delete()
+    {
+        Deleted = true;
+    }
 
-    public void Update() => UpdatedAt = DateTimeOffset.UtcNow;
+    public void Update()
+    {
+        UpdatedAt = DateTimeOffset.UtcNow;
+    }
 }
 
 public abstract class AuditEntity : Entity

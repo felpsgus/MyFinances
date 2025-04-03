@@ -22,9 +22,9 @@ public class UsersEndpoints : IEndpoint
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .AllowAnonymous();
 
-        group.MapGet("{userId:guid}", async (Guid userId, ISender sender) =>
+        group.MapGet("", async (ISender sender) =>
             {
-                var result = await sender.Send(new GetUserByIdQuery(userId));
+                var result = await sender.Send(new GetUserByIdQuery());
                 return Results.Ok(result);
             })
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)

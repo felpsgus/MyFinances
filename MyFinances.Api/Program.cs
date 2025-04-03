@@ -25,7 +25,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Title = "MyFinances API",
         Version = "v1",
-        Description = "API to manage your finances",
+        Description = "API to manage your finances"
     });
 
     options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
@@ -36,7 +36,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = JwtBearerDefaults.AuthenticationScheme,
         BearerFormat = "JWT",
         Description =
-            "Enter your token in the text input below.\n\nExample: \"12345abcdef\"",
+            "Enter your token in the text input below.\n\nExample: \"12345abcdef\""
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -47,8 +47,8 @@ builder.Services.AddSwaggerGen(options =>
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = JwtBearerDefaults.AuthenticationScheme,
-                },
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                }
             },
             Array.Empty<string>()
         }
@@ -67,6 +67,11 @@ builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 
 builder.Services.AddProblemDetails();
+
+builder.Services.AddMemoryCache();
+
+// Load User Secrets only in Development
+if (builder.Environment.IsDevelopment()) builder.Configuration.AddUserSecrets<Program>();
 
 builder.Services.ConfigureDependencyInjection(builder.Configuration);
 

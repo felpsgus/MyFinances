@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using MyFinances.Application.Abstractions.Interfaces;
 using MyFinances.Application.Abstractions.Repositories;
 using MyFinances.Infrastructure.Authentication;
+using MyFinances.Infrastructure.Context;
+using MyFinances.Infrastructure.Notification;
 using MyFinances.Infrastructure.Persistence.Context;
 using MyFinances.Infrastructure.Persistence.Interceptors;
 using MyFinances.Infrastructure.Persistence.Repositories;
@@ -21,6 +23,8 @@ public static class InfrastructureConfiguration
         services.AddAuthentication(configuration);
         services.AddPersistence(configuration);
         services.AddRepositories();
+        services.AddContext();
+        services.AddNotifications(configuration);
 
         return services;
     }
@@ -42,7 +46,7 @@ public static class InfrastructureConfiguration
                     ValidAudience = jwtOptions.Audience,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey)),
-                    ValidateLifetime = true,
+                    ValidateLifetime = true
                 };
             });
         services.AddAuthorization();
@@ -71,5 +75,20 @@ public static class InfrastructureConfiguration
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
+    }
+
+    private static void AddContext(this IServiceCollection services)
+    {
+        services.AddHttpContextAccessor();
+        services.AddScoped<IUserContext, UserContext>();
+    }
+
+    private static void AddNotifications(this IServiceCollection services, IConfiguration configuration)
+    {
+        var emailServiceOptions = new EmailServiceOptions();
+        configuration.Bind(nameof(emailServiceOptions), emailServiceOptions);
+        services.AddSingleton(emailServiceOptions);
+
+        services.AddScoped<IEmailService, EmailService>();
     }
 }

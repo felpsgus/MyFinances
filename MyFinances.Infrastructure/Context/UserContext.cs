@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using MyFinances.Application.Abstractions.Interfaces;
 using MyFinances.Domain.Enum;
@@ -34,4 +35,14 @@ internal sealed class UserContext : IUserContext
             .User
             .IsInRole(RoleEnum.Admin.ToString()) ??
         throw new ApplicationException(ExceptionMessage);
+
+    public RoleEnum Role =>
+        Enum.TryParse<RoleEnum>(
+            _httpContextAccessor
+                .HttpContext?
+                .User
+                .FindFirst(ClaimTypes.Role)?.Value,
+            out var role)
+            ? role
+            : throw new ApplicationException(ExceptionMessage);
 }

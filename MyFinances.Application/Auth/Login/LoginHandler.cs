@@ -21,10 +21,9 @@ public sealed class LoginHandler : IRequestHandler<LoginCommand, LoginViewModel>
 
     public async Task<LoginViewModel> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var hashPassword = _authService.ComputeHash(request.Password);
-        var user = await _userRepository.GetUserByCredentials(request.Email, hashPassword, cancellationToken);
+        var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
 
-        if (user == null)
+        if (user == null || !user.ValidatePassword(request.Password))
             throw new ValidationException("Invalid credentials");
 
         var (token, expiration) = _authService.GenerateJwtToken(user);

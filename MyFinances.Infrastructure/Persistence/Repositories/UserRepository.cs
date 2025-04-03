@@ -34,23 +34,11 @@ public class UserRepository : IUserRepository
     {
         return await _myFinancesDbContext.Users
             .IgnoreAutoIncludes()
-            .SingleOrDefaultAsync(u => u.Id == id, cancellationToken: cancellationToken);
+            .SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 
-    public async Task<List<User>> GetAllAsync(CancellationToken cancellationToken = default)
-    {
-        return await _myFinancesDbContext.Users.ToListAsync(cancellationToken: cancellationToken);
-    }
-
-    public async Task<User?> CheckEmailAsync(string email, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return await _myFinancesDbContext.Users.SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
-    }
-
-    public async Task<User?> GetUserByCredentials(string email, string password,
-        CancellationToken cancellationToken = default)
-    {
-        return await _myFinancesDbContext.Users.SingleOrDefaultAsync(u => u.Email == email && u.Password == password,
-            cancellationToken);
     }
 }

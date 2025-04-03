@@ -17,22 +17,6 @@ public class AuthenticationService : IAuthenticationService
         _jwtOptions = jwtOptions;
     }
 
-    public string ComputeHash(string password)
-    {
-        var hashedBytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
-
-        var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
-
-        var builder = new StringBuilder();
-
-        foreach (var t in hashedBytes)
-        {
-            builder.Append(t.ToString("X"));
-        }
-
-        return hash;
-    }
-
     public (string token, DateTime expiration) GenerateJwtToken(User user)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey));
@@ -43,7 +27,7 @@ public class AuthenticationService : IAuthenticationService
             new(ClaimTypes.Sid, user.Id.ToString()),
             new(ClaimTypes.Name, user.Name),
             new(ClaimTypes.Email, user.Email),
-            new(ClaimTypes.Role, user.Role.ToString()),
+            new(ClaimTypes.Role, user.Role.ToString())
         };
 
         var token = new JwtSecurityToken(
@@ -77,7 +61,7 @@ public class AuthenticationService : IAuthenticationService
             ValidateIssuer = true,
             ValidIssuer = _jwtOptions.Issuer,
             ValidateLifetime = false,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey))
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -86,16 +70,12 @@ public class AuthenticationService : IAuthenticationService
         if (securityToken is not JwtSecurityToken jwtSecurityToken ||
             !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
                 StringComparison.InvariantCultureIgnoreCase))
-        {
             throw new SecurityTokenException("Invalid token");
-        }
 
         var userIdClaim = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid);
         if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value) ||
             !Guid.TryParse(userIdClaim.Value, out var userId))
-        {
             throw new SecurityTokenException("Invalid token");
-        }
 
         return userId;
     }

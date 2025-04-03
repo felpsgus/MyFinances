@@ -28,19 +28,19 @@ public class ExceptionHandler : IExceptionHandler
                 Status = StatusCodes.Status404NotFound,
                 Type = exception.GetType().Name,
                 Title = "Not found",
-                Detail = exception.Message,
+                Detail = exception.Message
             },
             _ => new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
                 Type = exception.GetType().Name,
                 Title = "Server error",
-                Detail = exception.Message,
+                Detail = exception.Message
             }
         };
 
         httpContext.Response.StatusCode = (int)problemDetails.Status;
-        httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken: cancellationToken);
+        httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
         return new ValueTask<bool>(true);
     }

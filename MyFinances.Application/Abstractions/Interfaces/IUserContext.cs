@@ -1,3 +1,5 @@
+using MyFinances.Domain.Enum;
+
 namespace MyFinances.Application.Abstractions.Interfaces;
 
 public interface IUserContext
@@ -5,4 +7,5 @@ public interface IUserContext
     Guid UserId { get; }
     string Email { get; }
     bool IsAdmin { get; }
+    RoleEnum Role { get; }
 }

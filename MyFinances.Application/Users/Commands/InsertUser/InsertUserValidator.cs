@@ -17,7 +17,7 @@ public sealed class InsertUserValidator : AbstractValidator<InsertUserCommand>
             .NotEmpty()
             .WithMessage("E-mail is required.")
             .MustAsync(async (email, cancellationToken) =>
-                await userRepository.CheckEmailAsync(email, cancellationToken) == null)
+                await userRepository.GetByEmailAsync(email, cancellationToken) == null)
             .WithMessage("E-mail already in use.");
 
         RuleFor(p => p.BirthDate)

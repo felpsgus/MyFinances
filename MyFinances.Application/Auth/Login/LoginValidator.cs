@@ -13,7 +13,7 @@ public class LoginValidator : AbstractValidator<LoginCommand>
             .EmailAddress()
             .WithMessage("Invalid e-mail.")
             .MustAsync(async (email, cancelationToken) =>
-                await userRepository.CheckEmailAsync(email, cancelationToken) != null)
+                await userRepository.GetByEmailAsync(email, cancelationToken) != null)
             .WithMessage("E-mail not found.");
 
         RuleFor(r => r.Password)
