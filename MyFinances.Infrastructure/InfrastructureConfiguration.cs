@@ -57,8 +57,9 @@ public static class InfrastructureConfiguration
     private static void AddPersistence(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddSingleton<SoftDeleteInterceptor>();
-        services.AddSingleton<UpdateInterceptor>();
+        services.AddScoped<SoftDeleteInterceptor>();
+        services.AddScoped<UpdateInterceptor>();
+        services.AddScoped<AuditInterceptor>();
 
         var connectionString = configuration.GetConnectionString("MyFinancesCs");
         services.AddDbContext<MyFinancesDbContext>((sp, options) =>
@@ -67,7 +68,8 @@ public static class InfrastructureConfiguration
             options.EnableSensitiveDataLogging();
             options.AddInterceptors(
                 sp.GetRequiredService<SoftDeleteInterceptor>(),
-                sp.GetRequiredService<UpdateInterceptor>());
+                sp.GetRequiredService<UpdateInterceptor>(),
+                sp.GetRequiredService<AuditInterceptor>());
         });
     }
 
@@ -75,6 +77,7 @@ public static class InfrastructureConfiguration
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IFamilyRepository, FamilyRepository>();
     }
 
     private static void AddContext(this IServiceCollection services)

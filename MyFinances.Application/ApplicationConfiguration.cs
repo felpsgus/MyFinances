@@ -11,6 +11,7 @@ public static class ApplicationConfiguration
     {
         services.AddMediatR();
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
         return services;
     }
 

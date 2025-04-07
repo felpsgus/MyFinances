@@ -1,5 +1,7 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.OpenApi.Models;
 using MyFinances.Api;
 using MyFinances.Api.Endpoints;
@@ -63,6 +65,11 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
+
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 

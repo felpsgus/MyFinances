@@ -10,6 +10,7 @@ public class MyFinancesDbContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<Family> Families { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

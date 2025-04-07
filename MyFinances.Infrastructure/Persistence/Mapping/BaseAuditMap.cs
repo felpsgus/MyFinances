@@ -13,18 +13,16 @@ public abstract class BaseAuditMap<TEntity> : BaseMap<TEntity> where TEntity : A
         base.Configure(builder);
 
         builder
-            .HasOne(p => p.CreatedByUser)
+            .HasOne(p => p.CreatedBy)
             .WithMany()
-            .HasForeignKey(p => p.CreatedBy)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(p => p.CreatedById)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder
-            .HasOne(p => p.UpdatedByUser)
+            .HasOne(p => p.UpdatedBy)
             .WithMany()
-            .HasForeignKey(p => p.UpdatedBy)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(p => p.UpdatedById)
+            .OnDelete(DeleteBehavior.Restrict);
 
         MapFields(builder);
     }

@@ -22,20 +22,20 @@ public abstract class Entity
 
 public abstract class AuditEntity : Entity
 {
-    public Guid CreatedBy { get; private set; }
-    public User? CreatedByUser { get; private set; }
+    public Guid? CreatedById { get; private set; }
+    public User? CreatedBy { get; private set; }
 
-    public Guid UpdatedBy { get; private set; }
-    public User? UpdatedByUser { get; private set; }
+    public Guid? UpdatedById { get; private set; }
+    public User? UpdatedBy { get; private set; }
 
     public void Update(Guid userId)
     {
         base.Update();
-        UpdatedBy = userId;
+        UpdatedById = userId;
     }
 
     public void Create(Guid userId)
     {
-        CreatedBy = userId;
+        CreatedById = userId;
     }
 }

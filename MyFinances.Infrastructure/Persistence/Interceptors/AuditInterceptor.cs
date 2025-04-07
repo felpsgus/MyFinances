@@ -1,11 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using MyFinances.Application.Abstractions.Interfaces;
 using MyFinances.Domain.Shared;
 
 namespace MyFinances.Infrastructure.Persistence.Interceptors;
 
 public class AuditInterceptor : SaveChangesInterceptor
 {
+    private readonly IUserContext _userContext;
+
+    public AuditInterceptor(IUserContext userContext)
+    {
+        _userContext = userContext;
+    }
+
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,
         InterceptionResult<int> result,
         CancellationToken cancellationToken = new())
@@ -19,7 +27,10 @@ public class AuditInterceptor : SaveChangesInterceptor
         {
             if (entry.Entity is not AuditEntity entity) continue;
 
-            entity.Update();
+            if (entry.State == EntityState.Added)
+                entity.Create(_userContext.UserId);
+
+            entity.Update(_userContext.UserId);
         }
 
         return base.SavingChangesAsync(eventData, result, cancellationToken);
