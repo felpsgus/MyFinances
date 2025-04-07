@@ -1,11 +1,11 @@
 using FluentValidation;
 using MyFinances.Application.Abstractions.Repositories;
 
-namespace MyFinances.Application.Users.Commands.InsertUser;
+namespace MyFinances.Application.Users.Commands.CreateUser;
 
-public sealed class InsertUserValidator : AbstractValidator<InsertUserCommand>
+public sealed class CreateUserValidator : AbstractValidator<CreateUserCommand>
 {
-    public InsertUserValidator(IUserRepository userRepository)
+    public CreateUserValidator(IUserRepository userRepository)
     {
         RuleFor(p => p.Name)
             .NotEmpty()

@@ -1,9 +1,8 @@
-using MyFinances.Application.Abstractions;
 using MyFinances.Application.Abstractions.Interfaces;
 
-namespace MyFinances.Application.Users.Commands.InsertUser;
+namespace MyFinances.Application.Users.Commands.CreateUser;
 
-public record InsertUserCommand(
+public record CreateUserCommand(
     string Name,
     string Email,
     DateOnly BirthDate,

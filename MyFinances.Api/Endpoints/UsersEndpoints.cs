@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MyFinances.Api.Interfaces;
-using MyFinances.Application.Users.Commands.InsertUser;
+using MyFinances.Application.Users.Commands.CreateUser;
 using MyFinances.Application.Users.Queries.GetUserById;
 using MyFinances.Application.Users.Views;
 
@@ -13,7 +13,7 @@ public class UsersEndpoints : IEndpoint
     {
         var group = app.MapGroup("users").WithGroupName("Users");
 
-        group.MapPost("", async (InsertUserCommand request, ISender sender) =>
+        group.MapPost("", async (CreateUserCommand request, ISender sender) =>
             {
                 var result = await sender.Send(request);
                 return Results.Created($"/users", result);
