@@ -4,20 +4,20 @@ using MyFinances.Application.Abstractions.Repositories;
 using MyFinances.Application.Users.Views;
 using MyFinances.Domain.Exceptions;
 
-namespace MyFinances.Application.Users.Queries.GetUserById;
+namespace MyFinances.Application.Users.Queries.GetById;
 
-public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserViewModel>
+public class GetByIdHandler : IRequestHandler<GetByIdQuery, UserViewModel>
 {
     private readonly IUserRepository _userRepository;
     private readonly IUserContext _userContext;
 
-    public GetUserByIdHandler(IUserRepository userRepository, IUserContext userContext)
+    public GetByIdHandler(IUserRepository userRepository, IUserContext userContext)
     {
         _userRepository = userRepository;
         _userContext = userContext;
     }
 
-    public async Task<UserViewModel> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+    public async Task<UserViewModel> Handle(GetByIdQuery request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(_userContext.UserId, cancellationToken);
         if (user == null)

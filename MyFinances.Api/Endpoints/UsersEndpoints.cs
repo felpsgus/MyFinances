@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MyFinances.Api.Interfaces;
 using MyFinances.Application.Users.Commands.CreateUser;
-using MyFinances.Application.Users.Queries.GetUserById;
+using MyFinances.Application.Users.Queries.GetById;
 using MyFinances.Application.Users.Views;
 
 namespace MyFinances.Api.Endpoints;
@@ -24,7 +24,7 @@ public class UsersEndpoints : IEndpoint
 
         group.MapGet("", async (ISender sender) =>
             {
-                var result = await sender.Send(new GetUserByIdQuery());
+                var result = await sender.Send(new GetByIdQuery());
                 return Results.Ok(result);
             })
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
