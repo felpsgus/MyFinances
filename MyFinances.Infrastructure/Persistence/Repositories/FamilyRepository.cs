@@ -1,6 +1,5 @@
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using MyFinances.Application.Abstractions.Interfaces;
 using MyFinances.Application.Abstractions.Repositories;
 using MyFinances.Application.Families.Views;
 using MyFinances.Domain.Entities;
@@ -11,12 +10,12 @@ namespace MyFinances.Infrastructure.Persistence.Repositories;
 public class FamilyRepository : IFamilyRepository
 {
     private readonly MyFinancesDbContext _myFinancesDbContext;
-    private readonly IMapper _mapper;
+    private readonly IUserContext _userContext;
 
-    public FamilyRepository(MyFinancesDbContext myFinancesDbContext, IMapper mapper)
+    public FamilyRepository(MyFinancesDbContext myFinancesDbContext, IUserContext userContext)
     {
         _myFinancesDbContext = myFinancesDbContext;
-        _mapper = mapper;
+        _userContext = userContext;
     }
 
     public async Task AddAsync(Family family, CancellationToken cancellationToken = default)
@@ -24,13 +23,31 @@ public class FamilyRepository : IFamilyRepository
         await _myFinancesDbContext.Families.AddAsync(family, cancellationToken);
     }
 
-    public async Task<FamilyViewModel?> GetByIdAsync(Guid familyId, CancellationToken cancellationToken = default)
+    public void Delete(Family family)
     {
-        return await _myFinancesDbContext.Families
-            .AsNoTracking()
-            .Include(f => f.FamilyMembers)
-            .ThenInclude(fm => fm.User)
-            .ProjectTo<FamilyViewModel>(_mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync(f => f.Id == familyId, cancellationToken);
+        _myFinancesDbContext.Families.Remove(family);
+    }
+
+    public async Task<bool> ExistsAsync(Guid familyId, CancellationToken cancellation)
+    {
+        return await _myFinancesDbContext.Families.AnyAsync(f => f.Id == familyId, cancellation);
+    }
+
+    private IQueryable<Family> GetQueryable()
+    {
+        return _myFinancesDbContext.Families
+            .Include(f => f.FamilyMembers).ThenInclude(fm => fm.User)
+            .Where(f => f.FamilyMembers.Any(fm => fm.UserId == _userContext.UserId));
+    }
+
+    public async Task<Family?> GetByIdAsync(Guid familyId, CancellationToken cancellationToken = default)
+    {
+        return await GetQueryable().FirstOrDefaultAsync(f => f.Id == familyId, cancellationToken);
+    }
+
+    public async Task<List<FamilyViewModel>> GetAllFamiliesAsync(CancellationToken cancellationToken = default)
+    {
+        return await GetQueryable().Select(f => FamilyViewModel.FromEntity(f, _userContext))
+            .ToListAsync(cancellationToken);
     }
 }

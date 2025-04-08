@@ -3,7 +3,7 @@ using MyFinances.Application.Abstractions.Interfaces;
 using MyFinances.Application.Abstractions.Repositories;
 using MyFinances.Domain.Entities;
 
-namespace MyFinances.Application.Families.Commands;
+namespace MyFinances.Application.Families.Commands.CreateFamily;
 
 public class CreateFamilyHandler : IRequestHandler<CreateFamilyCommand, Guid>
 {
