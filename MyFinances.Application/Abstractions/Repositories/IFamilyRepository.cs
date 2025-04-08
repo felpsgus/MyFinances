@@ -3,9 +3,7 @@ using MyFinances.Domain.Entities;
 
 namespace MyFinances.Application.Abstractions.Repositories;
 
-public interface IFamilyRepository
+public interface IFamilyRepository : IBaseRepository<Family>
 {
-    Task AddAsync(Family family, CancellationToken cancellationToken = default);
-
-    Task<FamilyViewModel?> GetByIdAsync(Guid familyId, CancellationToken cancellationToken = default);
+    Task<List<FamilyViewModel>> GetAllFamiliesAsync(CancellationToken cancellationToken = default);
 }
