@@ -15,34 +15,53 @@ internal sealed class UserContext : IUserContext
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public Guid UserId =>
-        _httpContextAccessor
-            .HttpContext?
-            .User
-            .GetUserId() ??
-        throw new ApplicationException(ExceptionMessage);
+    private Guid? _userId;
 
-    public string Email =>
-        _httpContextAccessor
-            .HttpContext?
-            .User
-            .GetUserEmail() ??
-        throw new ApplicationException(ExceptionMessage);
+    public Guid UserId
+    {
+        get
+        {
+            _userId ??= _httpContextAccessor.HttpContext?.User.GetUserId() ??
+                        throw new ApplicationException(ExceptionMessage);
+            return _userId.Value;
+        }
+    }
 
-    public bool IsAdmin =>
-        _httpContextAccessor
-            .HttpContext?
-            .User
-            .IsInRole(RoleEnum.Admin.ToString()) ??
-        throw new ApplicationException(ExceptionMessage);
+    private string? _email;
 
-    public RoleEnum Role =>
-        Enum.TryParse<RoleEnum>(
-            _httpContextAccessor
-                .HttpContext?
-                .User
-                .FindFirst(ClaimTypes.Role)?.Value,
-            out var role)
-            ? role
-            : throw new ApplicationException(ExceptionMessage);
+    public string Email
+    {
+        get
+        {
+            _email ??= _httpContextAccessor.HttpContext?.User.GetUserEmail() ??
+                       throw new ApplicationException(ExceptionMessage);
+            return _email;
+        }
+    }
+
+    private bool? _isAdmin;
+
+    public bool IsAdmin
+    {
+        get
+        {
+            _isAdmin ??= _httpContextAccessor.HttpContext?.User.IsInRole(RoleEnum.Admin.ToString()) ??
+                         throw new ApplicationException(ExceptionMessage);
+            return _isAdmin.Value;
+        }
+    }
+
+    private RoleEnum? _role;
+
+    public RoleEnum Role
+    {
+        get
+        {
+            _role ??= Enum.TryParse(_httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Role)?.Value,
+                out RoleEnum role)
+                ? role
+                : throw new ApplicationException(ExceptionMessage);
+            return _role.Value;
+        }
+    }
 }
