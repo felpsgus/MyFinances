@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFinances.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFinances.Application", "MyFinances.Application\MyFinances.Application.csproj", "{BCFDCFEA-9CF0-4383-91F8-05ECF92FA751}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFinances.Test", "MyFinances.Test\MyFinances.Test.csproj", "{1748C387-F753-499B-AE03-B8356E5DF4DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,5 +37,9 @@ Global
 		{BCFDCFEA-9CF0-4383-91F8-05ECF92FA751}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCFDCFEA-9CF0-4383-91F8-05ECF92FA751}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCFDCFEA-9CF0-4383-91F8-05ECF92FA751}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1748C387-F753-499B-AE03-B8356E5DF4DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1748C387-F753-499B-AE03-B8356E5DF4DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1748C387-F753-499B-AE03-B8356E5DF4DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1748C387-F753-499B-AE03-B8356E5DF4DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
