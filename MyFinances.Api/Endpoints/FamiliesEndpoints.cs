@@ -1,13 +1,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MyFinances.Api.Interfaces;
-using MyFinances.Application.Families.Commands;
 using MyFinances.Application.Families.Commands.AcceptFamilyMembership;
 using MyFinances.Application.Families.Commands.AddFamilyMember;
 using MyFinances.Application.Families.Commands.CreateFamily;
 using MyFinances.Application.Families.Commands.RefuseFamilyMembership;
 using MyFinances.Application.Families.Queries.GetAllFamilies;
-using MyFinances.Application.Families.Queries.GetById;
+using MyFinances.Application.Families.Queries.GetFamilyById;
 using MyFinances.Application.Families.Views;
 
 namespace MyFinances.Api.Endpoints;
@@ -28,7 +27,7 @@ public class FamiliesEndpoints : IEndpoint
 
         group.MapGet("{id:guid}", async (Guid id, ISender sender) =>
             {
-                var result = await sender.Send(new GetByIdQuery(id));
+                var result = await sender.Send(new GetFamilyByIdQuery(id));
                 return Results.Ok(result);
             })
             .Produces<FamilyViewModel>()
