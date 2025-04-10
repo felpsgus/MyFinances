@@ -28,7 +28,7 @@ public class RefuseFamilyMembershipHandler : IRequestHandler<RefuseFamilyMembers
             throw new NotFoundException($"Family with ID {request.FamilyId} not found.");
 
         var membership = family.FamilyMembers.FirstOrDefault(fm => fm.UserId == _userContext.UserId);
-        membership.Reject();
+        membership.Refused();
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }

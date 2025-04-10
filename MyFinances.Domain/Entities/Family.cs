@@ -71,8 +71,8 @@ public class FamilyMember : Entity
         Status = FamilyMembershipStatus.Accepted;
     }
 
-    public void Reject()
+    public void Refused()
     {
-        Status = FamilyMembershipStatus.Rejected;
+        Status = FamilyMembershipStatus.Refused;
     }
 }
