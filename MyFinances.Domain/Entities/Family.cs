@@ -6,7 +6,8 @@ namespace MyFinances.Domain.Entities;
 public class Family : AuditEntity
 {
     public string Name { get; private set; } = string.Empty;
-    public List<FamilyMember> FamilyMembers { get; init; } = [];
+    private readonly List<FamilyMember> _familyMembers = [];
+    public IReadOnlyCollection<FamilyMember> FamilyMembers => _familyMembers.AsReadOnly();
 
     private Family()
     {
@@ -20,25 +21,21 @@ public class Family : AuditEntity
     public void AddFamilyMember(Guid userId)
     {
         var familyMember = new FamilyMember(userId, Id, FamilyMembers.Count == 0);
-
-        FamilyMembers.Add(familyMember);
+        _familyMembers.Add(familyMember);
     }
 
     public void RemoveFamilyMember(Guid userId)
     {
         var familyMember = FamilyMembers.FirstOrDefault(fm => fm.UserId == userId);
-        if (familyMember.IsHead)
+        if (familyMember?.IsHead == true)
         {
             var newHead = FamilyMembers.FirstOrDefault(fm => fm.UserId != userId);
-            if (newHead != null)
-            {
-                newHead.IsHead = true;
-            }
+            if (newHead != null) newHead.IsHead = true;
         }
 
         if (familyMember != null)
         {
-            FamilyMembers.Remove(familyMember);
+            _familyMembers.Remove(familyMember);
         }
     }
 }

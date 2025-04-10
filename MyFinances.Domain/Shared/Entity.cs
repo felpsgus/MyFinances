@@ -4,7 +4,7 @@ namespace MyFinances.Domain.Shared;
 
 public abstract class Entity
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; private set; } = Guid.NewGuid();
     public DateTimeOffset CreatedAt { get; private set; } = DateTimeOffset.UtcNow;
     public DateTimeOffset UpdatedAt { get; private set; } = DateTimeOffset.UtcNow;
     public bool Deleted { get; private set; } = false;
