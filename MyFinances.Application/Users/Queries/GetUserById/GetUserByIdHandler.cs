@@ -19,9 +19,10 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserViewMode
 
     public async Task<UserViewModel> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByIdAsync(_userContext.UserId, cancellationToken);
+        var userId = _userContext.UserId;
+        var user = await _userRepository.GetByIdAsync(userId, cancellationToken);
         if (user == null)
-            throw new NotFoundException($"User with ID {_userContext.UserId} not found.");
+            throw new NotFoundException($"User with ID {userId} not found.");
 
         return UserViewModel.FromEntity(user);
     }
