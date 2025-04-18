@@ -1,6 +1,7 @@
 using MediatR;
 using MyFinances.Application.Abstractions.Interfaces;
 using MyFinances.Application.Abstractions.Repositories;
+using MyFinances.Domain.Entities;
 using MyFinances.Domain.Exceptions;
 
 namespace MyFinances.Application.Families.Commands.AcceptFamilyMembership;
@@ -25,7 +26,7 @@ public class AcceptFamilyMembershipHandler : IRequestHandler<AcceptFamilyMembers
     {
         var family = await _familyRepository.GetByIdAsync(request.FamilyId, cancellationToken);
         if (family == null)
-            throw new NotFoundException($"Family with ID {request.FamilyId} not found.");
+            throw new NotFoundException(nameof(Family), request.FamilyId.ToString());
 
         var userId = _userContext.UserId;
         var membership = family.FamilyMembers.FirstOrDefault(fm => fm.UserId == userId);

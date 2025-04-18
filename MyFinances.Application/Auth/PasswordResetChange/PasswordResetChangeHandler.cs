@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.Caching.Memory;
 using MyFinances.Application.Abstractions.Repositories;
+using MyFinances.Domain.Entities;
 using MyFinances.Domain.Exceptions;
 
 namespace MyFinances.Application.Auth.PasswordResetChange;
@@ -26,7 +27,7 @@ public class PasswordResetChangeHandler : IRequestHandler<PasswordResetChangeCom
 
         var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
         if (user == null)
-            throw new NotFoundException("User not found.");
+            throw new NotFoundException(nameof(User));
 
         user.UpdatePassword(request.Password);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

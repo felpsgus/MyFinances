@@ -1,6 +1,7 @@
 using MediatR;
 using MyFinances.Application.Abstractions.Repositories;
 using MyFinances.Application.Families.Views;
+using MyFinances.Domain.Entities;
 using MyFinances.Domain.Exceptions;
 
 namespace MyFinances.Application.Families.Queries.GetFamilyById;
@@ -18,7 +19,7 @@ public class GetFamilyByIdHandler : IRequestHandler<GetFamilyByIdQuery, FamilyVi
     {
         var family = await _familyRepository.GetByIdAsync(request.FamilyId, cancellationToken);
         if (family is null)
-            throw new NotFoundException($"Family with ID {request.FamilyId} not found.");
+            throw new NotFoundException(nameof(Family), request.FamilyId.ToString());
 
         return family;
     }

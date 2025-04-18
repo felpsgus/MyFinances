@@ -2,6 +2,7 @@ using MediatR;
 using MyFinances.Application.Abstractions.Interfaces;
 using MyFinances.Application.Abstractions.Repositories;
 using MyFinances.Application.Users.Views;
+using MyFinances.Domain.Entities;
 using MyFinances.Domain.Exceptions;
 
 namespace MyFinances.Application.Users.Queries.GetUserById;
@@ -22,7 +23,7 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserViewMode
         var userId = _userContext.UserId;
         var user = await _userRepository.GetByIdAsync(userId, cancellationToken);
         if (user == null)
-            throw new NotFoundException($"User with ID {userId} not found.");
+            throw new NotFoundException(nameof(User), userId.ToString());
 
         return UserViewModel.FromEntity(user);
     }
