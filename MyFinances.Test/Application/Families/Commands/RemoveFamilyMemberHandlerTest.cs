@@ -1,50 +1,51 @@
 using FluentValidation;
 using MyFinances.Application.Abstractions.Interfaces;
 using MyFinances.Application.Families.Commands.AddFamilyMember;
+using MyFinances.Application.Families.Commands.RemoveFamilyMember;
 using MyFinances.Domain.Entities;
 using MyFinances.Domain.Exceptions;
 using MyFinances.Domain.Shared;
 
 namespace MyFinances.Test.Application.Families.Commands;
 
-public class AddFamilyMemberHandlerTest
+public class RemoveFamilyMemberHandlerTest
 {
     private readonly Mock<IFamilyRepository> _familyRepositoryMock;
+    private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly Mock<IEmailService> _emailServiceMock;
-    private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IUserContext> _userContextMock;
-    private readonly AddFamilyMemberHandler _handler;
+    private readonly RemoveFamilyMemberHandler _handler;
 
-    public AddFamilyMemberHandlerTest()
+    public RemoveFamilyMemberHandlerTest()
     {
         _familyRepositoryMock = new Mock<IFamilyRepository>();
+        _userRepositoryMock = new Mock<IUserRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _emailServiceMock = new Mock<IEmailService>();
-        _userRepositoryMock = new Mock<IUserRepository>();
         _userContextMock = new Mock<IUserContext>();
-        _handler = new AddFamilyMemberHandler(
+        _handler = new RemoveFamilyMemberHandler(
             _familyRepositoryMock.Object,
+            _userRepositoryMock.Object,
             _unitOfWorkMock.Object,
             _emailServiceMock.Object,
-            _userRepositoryMock.Object,
-            _userContextMock.Object
-        );
+            _userContextMock.Object);
     }
 
     [Fact]
-    public async Task ShouldAddFamilyMember()
+    public async Task ShouldRemoveFamilyMember()
     {
         // Arrange
-        var fakeFamily = FamilyFakerHelper.GetFakeFamily();
+        var fakeFamily = FamilyFakerHelper.GetFakeFamilyWithMembers(2);
         var fakeUser = UserFakerHelper.GetFakeUser();
-        var command = new AddFamilyMemberCommand(fakeFamily.Id, fakeUser.Email);
+        fakeFamily.AddFamilyMember(fakeUser.Id);
+        var command = new RemoveFamilyMemberCommand(fakeFamily.Id, fakeUser.Id);
 
         _familyRepositoryMock
             .Setup(repo => repo.GetByIdAsync(fakeFamily.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(fakeFamily);
         _userRepositoryMock
-            .Setup(repo => repo.GetByEmailAsync(fakeUser.Email, It.IsAny<CancellationToken>()))
+            .Setup(repo => repo.GetByIdAsync(fakeUser.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(fakeUser);
         _userContextMock
             .Setup(uc => uc.UserId)
@@ -56,13 +57,12 @@ public class AddFamilyMemberHandlerTest
         // Assert
         _familyRepositoryMock.Verify(repo => repo.GetByIdAsync(fakeFamily.Id, It.IsAny<CancellationToken>()),
             Times.Once);
-        _userRepositoryMock.Verify(repo => repo.GetByEmailAsync(fakeUser.Email, It.IsAny<CancellationToken>()),
-            Times.Once);
+        _userRepositoryMock.Verify(repo => repo.GetByIdAsync(fakeUser.Id, It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(repo => repo.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         _emailServiceMock.Verify(s => s.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),
             Times.Once);
         fakeFamily.FamilyMembers.Should().HaveCount(2);
-        fakeFamily.FamilyMembers.Should().ContainSingle(fm => fm.UserId == fakeUser.Id);
+        fakeFamily.FamilyMembers.Should().NotContain(fm => fm.UserId == fakeUser.Id);
     }
 
     [Fact]
@@ -71,7 +71,7 @@ public class AddFamilyMemberHandlerTest
         // Arrange
         var fakeFamily = FamilyFakerHelper.GetFakeFamily();
         var fakeUser = UserFakerHelper.GetFakeUser();
-        var command = new AddFamilyMemberCommand(fakeFamily.Id, fakeUser.Email);
+        var command = new RemoveFamilyMemberCommand(fakeFamily.Id, fakeUser.Id);
 
         _familyRepositoryMock
             .Setup(repo => repo.GetByIdAsync(fakeFamily.Id, It.IsAny<CancellationToken>()))
@@ -99,7 +99,7 @@ public class AddFamilyMemberHandlerTest
         // Arrange
         var fakeFamily = FamilyFakerHelper.GetFakeFamily();
         var fakeUser = UserFakerHelper.GetFakeUser();
-        var command = new AddFamilyMemberCommand(fakeFamily.Id, fakeUser.Email);
+        var command = new RemoveFamilyMemberCommand(fakeFamily.Id, fakeUser.Id);
 
         _familyRepositoryMock
             .Setup(repo => repo.GetByIdAsync(fakeFamily.Id, It.IsAny<CancellationToken>()))

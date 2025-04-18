@@ -5,6 +5,7 @@ using MyFinances.Application.Families.Commands.AcceptFamilyMembership;
 using MyFinances.Application.Families.Commands.AddFamilyMember;
 using MyFinances.Application.Families.Commands.CreateFamily;
 using MyFinances.Application.Families.Commands.RefuseFamilyMembership;
+using MyFinances.Application.Families.Commands.RemoveFamilyMember;
 using MyFinances.Application.Families.Queries.GetAllFamilies;
 using MyFinances.Application.Families.Queries.GetFamilyById;
 using MyFinances.Application.Families.Views;
@@ -34,6 +35,16 @@ public class FamiliesEndpoints : IEndpoint
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
 
         group.MapPost("{id:guid}/add-member", async (Guid id, AddFamilyMemberCommand command, ISender sender) =>
+            {
+                var fixedCommand = command with { FamilyId = id };
+                await sender.Send(fixedCommand);
+                return Results.NoContent();
+            })
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+
+        group.MapPost("{id:guid}/remove-member", async (Guid id, RemoveFamilyMemberCommand command, ISender sender) =>
             {
                 var fixedCommand = command with { FamilyId = id };
                 await sender.Send(fixedCommand);

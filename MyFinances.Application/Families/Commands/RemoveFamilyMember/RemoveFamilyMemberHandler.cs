@@ -6,31 +6,26 @@ using MyFinances.Domain.Entities;
 using MyFinances.Domain.Exceptions;
 using MyFinances.Domain.Shared;
 
-namespace MyFinances.Application.Families.Commands.AddFamilyMember;
+namespace MyFinances.Application.Families.Commands.RemoveFamilyMember;
 
-public class AddFamilyMemberHandler : IRequestHandler<AddFamilyMemberCommand>
+public class RemoveFamilyMemberHandler : IRequestHandler<RemoveFamilyMemberCommand>
 {
     private readonly IFamilyRepository _familyRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEmailService _emailService;
-    private readonly IUserRepository _userRepository;
     private readonly IUserContext _userContext;
 
-    public AddFamilyMemberHandler(
-        IFamilyRepository familyRepository,
-        IUnitOfWork unitOfWork,
-        IEmailService emailService,
-        IUserRepository userRepository,
-        IUserContext userContext)
+    public RemoveFamilyMemberHandler(IFamilyRepository familyRepository, IUserRepository userRepository, IUnitOfWork unitOfWork, IEmailService emailService, IUserContext userContext)
     {
         _familyRepository = familyRepository;
+        _userRepository = userRepository;
         _unitOfWork = unitOfWork;
         _emailService = emailService;
-        _userRepository = userRepository;
         _userContext = userContext;
     }
 
-    public async Task Handle(AddFamilyMemberCommand request, CancellationToken cancellationToken)
+    public async Task Handle(RemoveFamilyMemberCommand request, CancellationToken cancellationToken)
     {
         var family = await _familyRepository.GetByIdAsync(request.FamilyId, cancellationToken);
 
@@ -40,14 +35,14 @@ public class AddFamilyMemberHandler : IRequestHandler<AddFamilyMemberCommand>
         if (!family.FamilyMembers.Any(x => x.UserId == _userContext.UserId && x.IsHead))
             throw new ValidationException(ValidationMessages.User.NotHeadOfFamily);
 
-        var user = await _userRepository.GetByEmailAsync(request.UserEmail, cancellationToken);
-        family.AddFamilyMember(user.Id);
+        var user = await _userRepository.GetByIdAsync(request.MemberId, cancellationToken);
+        family.RemoveFamilyMember(user.Id);
 
         try
         {
             await _unitOfWork.BeginTransactionAsync(cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            await _emailService.SendEmailAsync(user.Email, "Family Member Added", $"You have been added to the family with name {family.Name}.");
+            await _emailService.SendEmailAsync(user.Email, "Family Member Removed", $"You have been removed from the family with name {family.Name}.");
             await _unitOfWork.CommitTransactionAsync(cancellationToken);
         }
         catch (Exception e)

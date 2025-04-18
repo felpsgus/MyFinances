@@ -22,6 +22,7 @@ public class FamilyViewModel
             Name = family.Name,
             FamilyMembers = family.FamilyMembers.Select(m => new FamilyMemberViewModel
             {
+                UserId = m.UserId,
                 UserName = m.User.Name,
                 IsHead = m.IsHead,
                 Status = m.Status
@@ -41,6 +42,7 @@ public class FamilyViewModel
 
 public class FamilyMemberViewModel
 {
+    public Guid UserId { get; set; }
     public string UserName { get; set; }
     public bool IsHead { get; set; }
     public FamilyMembershipStatus Status { get; set; }
