@@ -2,6 +2,7 @@ using MyFinances.Application.Abstractions.Interfaces;
 using MyFinances.Application.Users.Queries.GetUserById;
 using MyFinances.Domain.Entities;
 using MyFinances.Domain.Exceptions;
+using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Test.Application.Users.Queries;
 

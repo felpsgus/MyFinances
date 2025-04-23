@@ -1,5 +1,6 @@
 using MyFinances.Application.Families.Queries.GetFamilyById;
 using MyFinances.Domain.Exceptions;
+using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Test.Application.Families.Queries;
 

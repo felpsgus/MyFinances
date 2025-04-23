@@ -14,7 +14,7 @@ public class UserMap : BaseMap<User>
             .Property(u => u.Role)
             .HasConversion(
                 to => to.ToString(),
-                from => Enum.Parse<RoleEnum>(from))
+                from => Enum.Parse<Role>(from))
             .IsRequired();
     }
 }

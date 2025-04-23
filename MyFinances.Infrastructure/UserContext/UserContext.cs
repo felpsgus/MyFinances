@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using MyFinances.Application.Abstractions.Interfaces;
 using MyFinances.Domain.Enum;
 
-namespace MyFinances.Infrastructure.Context;
+namespace MyFinances.Infrastructure.UserContext;
 
 internal sealed class UserContext : IUserContext
 {
@@ -45,20 +45,20 @@ internal sealed class UserContext : IUserContext
     {
         get
         {
-            _isAdmin ??= _httpContextAccessor.HttpContext?.User.IsInRole(RoleEnum.Admin.ToString()) ??
+            _isAdmin ??= _httpContextAccessor.HttpContext?.User.IsInRole(Domain.Enum.Role.Admin.ToString()) ??
                          throw new ApplicationException(ExceptionMessage);
             return _isAdmin.Value;
         }
     }
 
-    private RoleEnum? _role;
+    private Role? _role;
 
-    public RoleEnum Role
+    public Role Role
     {
         get
         {
             _role ??= Enum.TryParse(_httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Role)?.Value,
-                out RoleEnum role)
+                out Role role)
                 ? role
                 : throw new ApplicationException(ExceptionMessage);
             return _role.Value;

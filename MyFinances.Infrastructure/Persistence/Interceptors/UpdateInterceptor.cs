@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using MyFinances.Domain.Shared;
+using MyFinances.Domain.Primitives;
 
 namespace MyFinances.Infrastructure.Persistence.Interceptors;
 
@@ -17,7 +17,7 @@ public class UpdateInterceptor : SaveChangesInterceptor
         foreach (var entry in entries)
         {
             if (entry.Entity is not Entity entity) continue;
-            entity.Update();
+            entity.UpdateEntity();
         }
 
         return base.SavingChangesAsync(eventData, result, cancellationToken);

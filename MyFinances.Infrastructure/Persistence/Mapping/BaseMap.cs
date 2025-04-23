@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyFinances.Domain.Shared;
+using MyFinances.Domain.Primitives;
 
 namespace MyFinances.Infrastructure.Persistence.Mapping;
 

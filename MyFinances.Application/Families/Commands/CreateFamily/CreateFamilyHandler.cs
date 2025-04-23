@@ -1,7 +1,7 @@
 using MediatR;
 using MyFinances.Application.Abstractions.Interfaces;
-using MyFinances.Application.Abstractions.Repositories;
 using MyFinances.Domain.Entities;
+using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Application.Families.Commands.CreateFamily;
 
@@ -20,10 +20,10 @@ public class CreateFamilyHandler : IRequestHandler<CreateFamilyCommand, Guid>
 
     public async Task<Guid> Handle(CreateFamilyCommand request, CancellationToken cancellationToken)
     {
-        var family = new Family(request.FamilyName);
+        var family = Family.Create(request.FamilyName);
         family.AddFamilyMember(_userContext.UserId);
 
-        await _familyRepository.AddAsync(family, cancellationToken);
+        family = await _familyRepository.AddAsync(family, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return family.Id;

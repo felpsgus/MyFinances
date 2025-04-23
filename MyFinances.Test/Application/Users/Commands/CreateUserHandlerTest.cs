@@ -1,5 +1,6 @@
 using MyFinances.Application.Users.Commands.CreateUser;
 using MyFinances.Domain.Entities;
+using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Test.Application.Users.Commands;
 
@@ -30,8 +31,7 @@ public class CreateUserHandlerTest
 
         _userRepository
             .Setup(ur => ur.AddAsync(It.IsAny<User>(), It.IsAny<CancellationToken>()))
-            .Callback<User, CancellationToken>((user, token) => fakeUser = user)
-            .Returns(Task.CompletedTask);
+            .ReturnsAsync(fakeUser);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);

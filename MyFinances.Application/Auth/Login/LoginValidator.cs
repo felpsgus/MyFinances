@@ -1,5 +1,5 @@
 using FluentValidation;
-using MyFinances.Application.Abstractions.Repositories;
+using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Application.Auth.Login;
 

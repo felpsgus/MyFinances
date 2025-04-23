@@ -1,8 +1,8 @@
 using MediatR;
 using MyFinances.Application.Abstractions.Interfaces;
-using MyFinances.Application.Abstractions.Repositories;
 using MyFinances.Domain.Entities;
 using MyFinances.Domain.Exceptions;
+using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Application.Families.Commands.RefuseFamilyMembership;
 

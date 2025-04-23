@@ -1,8 +1,8 @@
 using FluentValidation;
 using MediatR;
-using MyFinances.Application.Abstractions.Interfaces;
-using MyFinances.Application.Abstractions.Repositories;
+using MyFinances.Application.Abstractions.Services;
 using MyFinances.Application.Auth.Views;
+using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Application.Auth.Login;
 

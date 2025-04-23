@@ -1,18 +1,24 @@
 using System.Security.Cryptography;
 using System.Text;
 using MyFinances.Domain.Enum;
-using MyFinances.Domain.Shared;
+using MyFinances.Domain.Primitives;
 
 namespace MyFinances.Domain.Entities;
 
 public class User : Entity
 {
     public string Name { get; private set; }
+
     public string Email { get; private set; }
+
     public DateOnly BirthDate { get; private set; }
+
     public string Password { get; private set; }
-    public RoleEnum Role { get; private set; } = RoleEnum.User;
+
+    public Role Role { get; private set; } = Role.User;
+
     public string? RefreshToken { get; private set; }
+
     public DateTime? RefreshTokenExpiration { get; private set; }
 
     private User()

@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyFinances.Application.Abstractions.Interfaces;
-using MyFinances.Application.Abstractions.Repositories;
-using MyFinances.Application.Families.Views;
 using MyFinances.Domain.Entities;
+using MyFinances.Domain.Repositories;
 using MyFinances.Infrastructure.Persistence.Context;
 
 namespace MyFinances.Infrastructure.Persistence.Repositories;
@@ -18,19 +17,10 @@ public class FamilyRepository : IFamilyRepository
         _userContext = userContext;
     }
 
-    public async Task AddAsync(Family family, CancellationToken cancellationToken = default)
+    public async Task<Family> AddAsync(Family family, CancellationToken cancellationToken = default)
     {
         await _myFinancesDbContext.Families.AddAsync(family, cancellationToken);
-    }
-
-    public void Delete(Family family)
-    {
-        _myFinancesDbContext.Families.Remove(family);
-    }
-
-    public async Task<bool> ExistsAsync(Guid familyId, CancellationToken cancellation)
-    {
-        return await _myFinancesDbContext.Families.AnyAsync(f => f.Id == familyId, cancellation);
+        return family;
     }
 
     private IQueryable<Family> GetQueryable()
@@ -40,14 +30,9 @@ public class FamilyRepository : IFamilyRepository
             .Where(f => f.FamilyMembers.Any(fm => fm.UserId == _userContext.UserId));
     }
 
-    public async Task<Family?> GetByIdAsync(Guid familyId, CancellationToken cancellationToken = default)
-    {
-        return await GetQueryable().FirstOrDefaultAsync(f => f.Id == familyId, cancellationToken);
-    }
+    public async Task<Family?> GetByIdAsync(Guid familyId, CancellationToken cancellationToken = default) =>
+        await GetQueryable().FirstOrDefaultAsync(f => f.Id == familyId, cancellationToken);
 
-    public async Task<List<FamilyViewModel>> GetAllFamiliesAsync(CancellationToken cancellationToken = default)
-    {
-        return await GetQueryable().Select(f => FamilyViewModel.FromEntity(f, _userContext))
-            .ToListAsync(cancellationToken);
-    }
+    public async Task<List<Family>> GetAllFamiliesAsync(CancellationToken cancellationToken = default) =>
+        await GetQueryable().ToListAsync(cancellationToken);
 }

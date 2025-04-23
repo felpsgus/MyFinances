@@ -1,17 +1,21 @@
+using MyFinances.Application.Abstractions.Interfaces;
 using MyFinances.Application.Families.Queries.GetAllFamilies;
 using MyFinances.Application.Families.Views;
+using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Test.Application.Families.Queries;
 
 public class GetAllFamiliesHandlerTest
 {
     private readonly Mock<IFamilyRepository> _familyRepositoryMock;
+    private readonly Mock<IUserContext> _userContextMock;
     private readonly GetAllFamiliesHandler _getAllFamiliesHandler;
 
     public GetAllFamiliesHandlerTest()
     {
         _familyRepositoryMock = new Mock<IFamilyRepository>();
-        _getAllFamiliesHandler = new GetAllFamiliesHandler(_familyRepositoryMock.Object);
+        _userContextMock = new Mock<IUserContext>();
+        _getAllFamiliesHandler = new GetAllFamiliesHandler(_familyRepositoryMock.Object, _userContextMock.Object);
     }
 
     [Fact]
@@ -24,7 +28,7 @@ public class GetAllFamiliesHandlerTest
 
         _familyRepositoryMock
             .Setup(repo => repo.GetAllFamiliesAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(fakeFamiliesViewModel);
+            .ReturnsAsync(fakeFamilies);
 
         // Act
         var result = await _getAllFamiliesHandler.Handle(query, CancellationToken.None);

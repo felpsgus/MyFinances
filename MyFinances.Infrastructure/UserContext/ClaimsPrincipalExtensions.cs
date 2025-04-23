@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace MyFinances.Infrastructure.Context;
+namespace MyFinances.Infrastructure.UserContext;
 
 internal static class ClaimsPrincipalExtensions
 {

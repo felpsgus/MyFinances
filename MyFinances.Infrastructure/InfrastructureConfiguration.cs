@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MyFinances.Application.Abstractions.Interfaces;
-using MyFinances.Application.Abstractions.Repositories;
+using MyFinances.Application.Abstractions.Services;
+using MyFinances.Domain.Repositories;
 using MyFinances.Infrastructure.Authentication;
-using MyFinances.Infrastructure.Context;
 using MyFinances.Infrastructure.Notification;
 using MyFinances.Infrastructure.Persistence.Context;
 using MyFinances.Infrastructure.Persistence.Interceptors;
@@ -83,7 +83,7 @@ public static class InfrastructureConfiguration
     private static void AddContext(this IServiceCollection services)
     {
         services.AddHttpContextAccessor();
-        services.AddScoped<IUserContext, UserContext>();
+        services.AddScoped<IUserContext, UserContext.UserContext>();
     }
 
     private static void AddNotifications(this IServiceCollection services, IConfiguration configuration)

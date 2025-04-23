@@ -1,9 +1,10 @@
 using FluentValidation;
 using MediatR;
 using MyFinances.Application.Abstractions.Interfaces;
-using MyFinances.Application.Abstractions.Repositories;
+using MyFinances.Application.Abstractions.Services;
 using MyFinances.Domain.Entities;
 using MyFinances.Domain.Exceptions;
+using MyFinances.Domain.Repositories;
 using MyFinances.Domain.Shared;
 
 namespace MyFinances.Application.Families.Commands.RemoveFamilyMember;

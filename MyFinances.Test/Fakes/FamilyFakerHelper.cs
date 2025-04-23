@@ -6,7 +6,7 @@ namespace MyFinances.Test.Fakes;
 public static class FamilyFakerHelper
 {
     private static readonly Faker<Family> FamilyFaker = new Faker<Family>()
-        .CustomInstantiator(f => new Family(f.Name.LastName()));
+        .CustomInstantiator(f => Family.Create(f.Name.LastName()));
 
     public static Family GetFakeFamily()
     {

@@ -1,4 +1,4 @@
-using MyFinances.Application.Abstractions.Repositories;
+using MyFinances.Domain.Repositories;
 using MyFinances.Infrastructure.Persistence.Context;
 
 namespace MyFinances.Infrastructure.Persistence.Repositories;

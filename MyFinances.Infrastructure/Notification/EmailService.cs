@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Mail;
-using MyFinances.Application.Abstractions.Interfaces;
+using MyFinances.Application.Abstractions.Services;
 
 namespace MyFinances.Infrastructure.Notification;
 

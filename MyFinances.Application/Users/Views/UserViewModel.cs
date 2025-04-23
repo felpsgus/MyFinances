@@ -5,7 +5,7 @@ namespace MyFinances.Application.Users.Views;
 
 public class UserViewModel
 {
-    public UserViewModel(Guid id, string name, string email, DateOnly birthDate, RoleEnum role)
+    public UserViewModel(Guid id, string name, string email, DateOnly birthDate, Role role)
     {
         Id = id;
         Name = name;
@@ -18,7 +18,7 @@ public class UserViewModel
     public string Name { get; set; }
     public string Email { get; set; }
     public DateOnly BirthDate { get; set; }
-    public RoleEnum Role { get; set; }
+    public Role Role { get; set; }
 
     public static UserViewModel FromEntity(User user)
     {

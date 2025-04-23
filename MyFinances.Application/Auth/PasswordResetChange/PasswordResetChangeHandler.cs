@@ -1,8 +1,8 @@
 using MediatR;
 using Microsoft.Extensions.Caching.Memory;
-using MyFinances.Application.Abstractions.Repositories;
 using MyFinances.Domain.Entities;
 using MyFinances.Domain.Exceptions;
+using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Application.Auth.PasswordResetChange;
 

@@ -7,5 +7,5 @@ public interface IUserContext
     Guid UserId { get; }
     string Email { get; }
     bool IsAdmin { get; }
-    RoleEnum Role { get; }
+    Role Role { get; }
 }

@@ -1,9 +1,9 @@
 using MediatR;
 using MyFinances.Application.Abstractions.Interfaces;
-using MyFinances.Application.Abstractions.Repositories;
 using MyFinances.Application.Users.Views;
 using MyFinances.Domain.Entities;
 using MyFinances.Domain.Exceptions;
+using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Application.Users.Queries.GetUserById;
 

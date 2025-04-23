@@ -1,6 +1,6 @@
 using MediatR;
-using MyFinances.Application.Abstractions.Repositories;
 using MyFinances.Domain.Entities;
+using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Application.Users.Commands.CreateUser;
 
@@ -22,8 +22,10 @@ public sealed class CreateUserHandler : IRequestHandler<CreateUserCommand, Guid>
             request.Email,
             request.BirthDate,
             request.Password);
-        await _userRepository.AddAsync(user, cancellationToken);
+
+        user = await _userRepository.AddAsync(user, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+        
         return user.Id;
     }
 }

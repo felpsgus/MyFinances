@@ -1,6 +1,6 @@
 using MyFinances.Domain.Entities;
 
-namespace MyFinances.Application.Abstractions.Interfaces;
+namespace MyFinances.Application.Abstractions.Services;
 
 public interface IAuthenticationService
 {

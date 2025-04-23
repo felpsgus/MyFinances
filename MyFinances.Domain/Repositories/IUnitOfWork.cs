@@ -1,4 +1,4 @@
-namespace MyFinances.Application.Abstractions.Repositories;
+namespace MyFinances.Domain.Repositories;
 
 public interface IUnitOfWork
 {

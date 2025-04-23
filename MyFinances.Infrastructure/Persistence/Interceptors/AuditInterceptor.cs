@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using MyFinances.Application.Abstractions.Interfaces;
-using MyFinances.Domain.Shared;
+using MyFinances.Domain.Primitives;
 
 namespace MyFinances.Infrastructure.Persistence.Interceptors;
 
@@ -28,9 +28,9 @@ public class AuditInterceptor : SaveChangesInterceptor
             if (entry.Entity is not AuditEntity entity) continue;
 
             if (entry.State == EntityState.Added)
-                entity.Create(_userContext.UserId);
+                entity.CreateEntity(_userContext.UserId);
 
-            entity.Update(_userContext.UserId);
+            entity.UpdateEntity(_userContext.UserId);
         }
 
         return base.SavingChangesAsync(eventData, result, cancellationToken);

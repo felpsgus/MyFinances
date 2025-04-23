@@ -1,6 +1,7 @@
 using MyFinances.Application.Abstractions.Interfaces;
 using MyFinances.Application.Families.Commands.RefuseFamilyMembership;
 using MyFinances.Domain.Enum;
+using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Test.Application.Families.Commands;
 

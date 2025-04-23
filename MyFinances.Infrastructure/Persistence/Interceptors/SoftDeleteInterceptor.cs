@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using MyFinances.Domain.Shared;
+using MyFinances.Domain.Primitives;
 
 namespace MyFinances.Infrastructure.Persistence.Interceptors;
 
@@ -17,7 +17,7 @@ public class SoftDeleteInterceptor : SaveChangesInterceptor
         foreach (var entry in entries)
         {
             entry.State = EntityState.Modified;
-            entry.Entity.Delete();
+            entry.Entity.DeleteEntity();
         }
 
         return base.SavingChangesAsync(eventData, result, cancellationToken);
