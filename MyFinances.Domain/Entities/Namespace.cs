@@ -6,6 +6,10 @@ namespace MyFinances.Domain.Entities;
 
 public class Namespace : AuditEntity
 {
+    private Namespace()
+    {
+    }
+
     public string Name { get; private set; }
 
     public NamespaceType Type { get; private set; }
@@ -15,10 +19,6 @@ public class Namespace : AuditEntity
 
     public Guid? FamilyId { get; private set; }
     public Family? Family { get; private set; }
-
-    private Namespace()
-    {
-    }
 
     public static Namespace Create(string name, NamespaceType type, Guid? userId, Guid? familyId)
     {
