@@ -5,25 +5,30 @@ namespace MyFinances.Domain.Entities;
 
 public class FamilyMember : Entity
 {
-    public Guid UserId { get; set; }
-    public User? User { get; set; } = null!;
-
-    public Guid FamilyId { get; set; }
-    public Family? Family { get; set; } = null!;
-
-    public bool IsHead { get; set; }
-    public FamilyMembershipStatus Status { get; set; } = FamilyMembershipStatus.Pending;
-
     private FamilyMember()
     {
     }
 
-    public FamilyMember(Guid userId, Guid familyId, bool isHead)
+    private FamilyMember(Guid userId, Guid familyId, bool isHead)
     {
         UserId = userId;
         FamilyId = familyId;
         IsHead = isHead;
         Status = isHead ? FamilyMembershipStatus.Accepted : FamilyMembershipStatus.Pending;
+    }
+
+    public Guid UserId { get; set; }
+    public User? User { get; set; }
+
+    public Guid FamilyId { get; set; }
+    public Family? Family { get; set; }
+
+    public bool IsHead { get; set; }
+    public FamilyMembershipStatus Status { get; set; } = FamilyMembershipStatus.Pending;
+
+    internal static FamilyMember Create(Guid userId, Guid familyId, bool isHead)
+    {
+        return new FamilyMember(userId, familyId, isHead);
     }
 
     public void Accept()

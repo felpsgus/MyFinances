@@ -67,7 +67,7 @@ public class RemoveFamilyMemberHandlerTest
     }
 
     [Fact]
-    public async Task ShouldThrowNotFoundException()
+    public async Task ShouldThrowNotFoundExceptionWhenFamilyNotFound()
     {
         // Arrange
         var fakeFamily = FamilyFakerHelper.GetFakeFamily();
@@ -122,6 +122,39 @@ public class RemoveFamilyMemberHandlerTest
         _emailServiceMock.Verify(s => s.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),
             Times.Never);
         _userContextMock.Verify(uc => uc.UserId, Times.Once);
+        fakeFamily.FamilyMembers.Should().HaveCount(1);
+    }
+
+    [Fact]
+    public async Task ShouldThrowNotFoundExceptionWhenFamilyMemberNotFound()
+    {
+        // Arrange
+        var fakeFamily = FamilyFakerHelper.GetFakeFamily();
+        var fakeUser = UserFakerHelper.GetFakeUser();
+        var command = new RemoveFamilyMemberCommand(fakeFamily.Id, fakeUser.Id);
+
+        _familyRepositoryMock
+            .Setup(repo => repo.GetByIdAsync(fakeFamily.Id, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(fakeFamily);
+        _userRepositoryMock
+            .Setup(repo => repo.GetByIdAsync(fakeUser.Id, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(fakeUser);
+        _userContextMock
+            .Setup(uc => uc.UserId)
+            .Returns(fakeFamily.FamilyMembers.First().UserId);
+
+        // Act
+        Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<NotFoundException>();
+        _familyRepositoryMock.Verify(repo => repo.GetByIdAsync(fakeFamily.Id, It.IsAny<CancellationToken>()),
+            Times.Once);
+        _userRepositoryMock.Verify(repo => repo.GetByIdAsync(fakeUser.Id, It.IsAny<CancellationToken>()),
+            Times.Once);
+        _unitOfWorkMock.Verify(repo => repo.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _emailServiceMock.Verify(s => s.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),
+            Times.Never);
         fakeFamily.FamilyMembers.Should().HaveCount(1);
     }
 }
