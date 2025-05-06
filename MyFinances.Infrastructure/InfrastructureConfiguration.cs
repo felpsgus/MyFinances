@@ -78,6 +78,7 @@ public static class InfrastructureConfiguration
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IFamilyRepository, FamilyRepository>();
+        services.AddScoped<INamespaceRepository, NamespaceRepository>();
     }
 
     private static void AddContext(this IServiceCollection services)

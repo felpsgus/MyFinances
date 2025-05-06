@@ -22,7 +22,7 @@ public abstract class BaseMap<TEntity> : IEntityTypeConfiguration<TEntity> where
         builder
             .Property(p => p.Id)
             .IsRequired()
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedNever();
 
         builder
             .Property(p => p.CreatedAt)

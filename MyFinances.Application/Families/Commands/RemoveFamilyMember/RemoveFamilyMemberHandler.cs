@@ -49,6 +49,7 @@ public class RemoveFamilyMemberHandler : IRequestHandler<RemoveFamilyMemberComma
         catch (Exception e)
         {
             await _unitOfWork.RollbackTransactionAsync(cancellationToken);
+            throw new Exception("An error occurred while removing the family member.", e);
         }
     }
 }

@@ -35,4 +35,7 @@ public class FamilyRepository : IFamilyRepository
 
     public async Task<List<Family>> GetAllFamiliesAsync(CancellationToken cancellationToken = default) =>
         await GetQueryable().ToListAsync(cancellationToken);
+
+    public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default) =>
+        await GetQueryable().AnyAsync(f => f.Id == id, cancellationToken);
 }

@@ -5,14 +5,15 @@ namespace MyFinances.Domain.Entities;
 
 public class Family : AuditEntity
 {
+    private readonly List<FamilyMember> _familyMembers = [];
+
     private Family()
     {
     }
 
     public string Name { get; private set; } = string.Empty;
 
-    private readonly List<FamilyMember> _familyMembers = [];
-    public IReadOnlyCollection<FamilyMember> FamilyMembers => _familyMembers.AsReadOnly();
+    public IReadOnlyList<FamilyMember> FamilyMembers => _familyMembers;
 
     public static Family Create(string name)
     {

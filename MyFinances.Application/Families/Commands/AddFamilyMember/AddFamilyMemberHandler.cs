@@ -54,6 +54,7 @@ public class AddFamilyMemberHandler : IRequestHandler<AddFamilyMemberCommand>
         catch (Exception e)
         {
             await _unitOfWork.RollbackTransactionAsync(cancellationToken);
+            throw new Exception("An error occurred while adding the family member.", e);
         }
     }
 }

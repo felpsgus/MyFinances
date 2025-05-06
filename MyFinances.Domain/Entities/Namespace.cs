@@ -38,4 +38,11 @@ public class Namespace : AuditEntity
             FamilyId = familyId
         };
     }
+
+    public void Update(string name)
+    {
+        name.ThrowIfNullOrEmpty(nameof(name));
+
+        Name = name;
+    }
 }
