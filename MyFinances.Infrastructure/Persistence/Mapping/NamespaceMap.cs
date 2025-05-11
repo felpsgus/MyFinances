@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyFinances.Domain.Entities;
 
@@ -21,5 +22,20 @@ public class NamespaceMap : BaseAuditMap<Namespace>
 
         builder.Property(x => x.FamilyId)
             .IsRequired(false);
+
+        builder.HasMany(x => x.Tags)
+            .WithOne()
+            .HasForeignKey(x => x.NamespaceId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.Expenses)
+            .WithOne()
+            .HasForeignKey(x => x.NamespaceId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.Debts)
+            .WithOne()
+            .HasForeignKey(x => x.NamespaceId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

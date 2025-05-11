@@ -5,7 +5,7 @@ using MyFinances.Application.Abstractions.Interfaces;
 namespace MyFinances.Application.Abstractions.Behaviors;
 
 public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : ICommand
+    where TRequest : ICommandBase
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
