@@ -30,12 +30,18 @@ public class FamilyRepository : IFamilyRepository
             .Where(f => f.FamilyMembers.Any(fm => fm.UserId == _userContext.UserId));
     }
 
-    public async Task<Family?> GetByIdAsync(Guid familyId, CancellationToken cancellationToken = default) =>
-        await GetQueryable().FirstOrDefaultAsync(f => f.Id == familyId, cancellationToken);
+    public async Task<Family?> GetByIdAsync(Guid familyId, CancellationToken cancellationToken = default)
+    {
+        return await GetQueryable().FirstOrDefaultAsync(f => f.Id == familyId, cancellationToken);
+    }
 
-    public async Task<List<Family>> GetAllFamiliesAsync(CancellationToken cancellationToken = default) =>
-        await GetQueryable().ToListAsync(cancellationToken);
+    public async Task<List<Family>> GetAllFamiliesAsync(CancellationToken cancellationToken = default)
+    {
+        return await GetQueryable().ToListAsync(cancellationToken);
+    }
 
-    public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default) =>
-        await GetQueryable().AnyAsync(f => f.Id == id, cancellationToken);
+    public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await GetQueryable().AnyAsync(f => f.Id == id, cancellationToken);
+    }
 }

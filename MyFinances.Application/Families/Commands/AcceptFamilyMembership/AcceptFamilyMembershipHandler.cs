@@ -26,7 +26,7 @@ public class AcceptFamilyMembershipHandler : IRequestHandler<AcceptFamilyMembers
     {
         var family = await _familyRepository.GetByIdAsync(request.FamilyId, cancellationToken);
         if (family == null)
-            throw new NotFoundException(nameof(Family), request.FamilyId.ToString());
+            throw new NotFoundException(typeof(Family), request.FamilyId);
 
         var userId = _userContext.UserId;
         var membership = family.FamilyMembers.FirstOrDefault(fm => fm.UserId == userId);

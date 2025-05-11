@@ -18,7 +18,11 @@ public class DeleteNamespaceHandler : IRequestHandler<DeleteNamespaceCommand>
 
     public async Task Handle(DeleteNamespaceCommand request, CancellationToken cancellationToken)
     {
-        await _namespaceRepository.Delete(request.NamespaceId, cancellationToken);
+        var @namespace = await _namespaceRepository.GetByIdAsync(request.NamespaceId, cancellationToken);
+        if (@namespace == null)
+            throw new NotFoundException(typeof(Namespace), request.NamespaceId);
+
+        _namespaceRepository.Delete(@namespace, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

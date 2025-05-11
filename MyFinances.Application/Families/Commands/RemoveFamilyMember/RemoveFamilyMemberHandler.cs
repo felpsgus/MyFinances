@@ -17,7 +17,12 @@ public class RemoveFamilyMemberHandler : IRequestHandler<RemoveFamilyMemberComma
     private readonly IEmailService _emailService;
     private readonly IUserContext _userContext;
 
-    public RemoveFamilyMemberHandler(IFamilyRepository familyRepository, IUserRepository userRepository, IUnitOfWork unitOfWork, IEmailService emailService, IUserContext userContext)
+    public RemoveFamilyMemberHandler(
+        IFamilyRepository familyRepository,
+        IUserRepository userRepository,
+        IUnitOfWork unitOfWork,
+        IEmailService emailService,
+        IUserContext userContext)
     {
         _familyRepository = familyRepository;
         _userRepository = userRepository;
@@ -31,7 +36,7 @@ public class RemoveFamilyMemberHandler : IRequestHandler<RemoveFamilyMemberComma
         var family = await _familyRepository.GetByIdAsync(request.FamilyId, cancellationToken);
 
         if (family == null)
-            throw new NotFoundException(nameof(Family), request.FamilyId.ToString());
+            throw new NotFoundException(typeof(Family), request.FamilyId);
 
         if (!family.FamilyMembers.Any(x => x.UserId == _userContext.UserId && x.IsHead))
             throw new ValidationException(ValidationMessages.User.NotHeadOfFamily);
@@ -43,7 +48,8 @@ public class RemoveFamilyMemberHandler : IRequestHandler<RemoveFamilyMemberComma
         {
             await _unitOfWork.BeginTransactionAsync(cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            await _emailService.SendEmailAsync(user.Email, "Family Member Removed", $"You have been removed from the family with name {family.Name}.");
+            await _emailService.SendEmailAsync(user.Email, "Family Member Removed",
+                $"You have been removed from the family with name {family.Name}.");
             await _unitOfWork.CommitTransactionAsync(cancellationToken);
         }
         catch (Exception e)

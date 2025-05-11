@@ -23,7 +23,7 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserViewMode
         var userId = _userContext.UserId;
         var user = await _userRepository.GetByIdAsync(userId, cancellationToken);
         if (user == null)
-            throw new NotFoundException(nameof(User), userId.ToString());
+            throw new NotFoundException(typeof(User), userId);
 
         return UserViewModel.FromEntity(user);
     }

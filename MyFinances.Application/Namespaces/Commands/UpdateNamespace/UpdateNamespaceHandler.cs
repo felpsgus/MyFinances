@@ -20,7 +20,7 @@ public class UpdateNamespaceHandler : IRequestHandler<UpdateNamespaceCommand>
     {
         var @namespace = await _namespaceRepository.GetByIdAsync(request.NamespaceId, cancellationToken);
         if (@namespace is null)
-            throw new NotFoundException(nameof(Namespace), request.NamespaceId.ToString());
+            throw new NotFoundException(typeof(Namespace), request.NamespaceId);
 
         @namespace.Update(request.Name);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

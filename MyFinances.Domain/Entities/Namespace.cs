@@ -1,4 +1,5 @@
 using MyFinances.Domain.Enum;
+using MyFinances.Domain.Exceptions;
 using MyFinances.Domain.Extensions;
 using MyFinances.Domain.Primitives;
 
@@ -23,6 +24,7 @@ public class Namespace : AuditEntity
     public static Namespace Create(string name, NamespaceType type, Guid? userId, Guid? familyId)
     {
         name.ThrowIfNullOrEmpty(nameof(name));
+        type.ThrowIfDefault(nameof(type));
 
         if (type == NamespaceType.Personal && userId == null)
             throw new ArgumentNullException(nameof(userId), "User ID cannot be null for personal namespace.");

@@ -29,11 +29,11 @@ public class CreateNamespaceHandler : IRequestHandler<CreateNamespaceCommand, Gu
     {
         if (request.Type == NamespaceType.Personal &&
             !await _userRepository.ExistsAsync((Guid)request.UserId, cancellationToken))
-            throw new NotFoundException(nameof(User), request.UserId.ToString());
+            throw new NotFoundException(typeof(User), (Guid)request.UserId);
 
         if (request.Type == NamespaceType.Family &&
             !await _familyRepository.ExistsAsync((Guid)request.FamilyId, cancellationToken))
-            throw new NotFoundException(nameof(Family), request.FamilyId.ToString());
+            throw new NotFoundException(typeof(Family), (Guid)request.FamilyId);
 
         var namespaceInstance = Namespace.Create(
             request.Name,
@@ -42,7 +42,7 @@ public class CreateNamespaceHandler : IRequestHandler<CreateNamespaceCommand, Gu
             request.FamilyId
         );
 
-        await _namespaceRepository.AddAsync(namespaceInstance, cancellationToken);
+        namespaceInstance = await _namespaceRepository.AddAsync(namespaceInstance, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return namespaceInstance.Id;

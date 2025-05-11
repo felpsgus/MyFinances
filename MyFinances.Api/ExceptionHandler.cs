@@ -12,30 +12,34 @@ public class ExceptionHandler : IExceptionHandler
     {
         var problemDetails = exception switch
         {
-            ValidationException => new ProblemDetails
+            ValidationException validationException => new ProblemDetails
             {
                 Status = StatusCodes.Status400BadRequest,
-                Type = exception.GetType().Name,
+                Type = validationException.GetType().Name,
                 Title = "Bad request",
-                Detail = exception.Message,
+                Detail = validationException.Message,
                 Extensions =
                 {
-                    ["failures"] = ((ValidationException)exception).Errors
+                    ["failures"] = validationException.Errors
                 }
             },
-            NotFoundException => new ProblemDetails
+            DomainException domainException => new ProblemDetails
             {
-                Status = StatusCodes.Status404NotFound,
-                Type = exception.GetType().Name,
-                Title = "Not found",
-                Detail = exception.Message
+                Status = domainException.StatusCode,
+                Type = domainException.GetType().Name,
+                Title = domainException.Title,
+                Detail = domainException.Message
             },
             _ => new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
                 Type = exception.GetType().Name,
                 Title = "Server error",
-                Detail = exception.Message
+                Detail = exception.Message,
+                Extensions =
+                {
+                    ["stackTrace"] = exception.StackTrace
+                }
             }
         };
 

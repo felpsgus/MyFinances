@@ -19,7 +19,7 @@ public class GetFamilyByIdHandler : IRequestHandler<GetFamilyByIdQuery, FamilyVi
     {
         var family = await _familyRepository.GetByIdAsync(request.FamilyId, cancellationToken);
         if (family is null)
-            throw new NotFoundException(nameof(Family), request.FamilyId.ToString());
+            throw new NotFoundException(typeof(Family), request.FamilyId);
 
         return family;
     }

@@ -45,7 +45,7 @@ internal sealed class UserContext : IUserContext
     {
         get
         {
-            _isAdmin ??= _httpContextAccessor.HttpContext?.User.IsInRole(Domain.Enum.Role.Admin.ToString()) ??
+            _isAdmin ??= _httpContextAccessor.HttpContext?.User.IsInRole(Role.Admin.ToString()) ??
                          throw new ApplicationException(ExceptionMessage);
             return _isAdmin.Value;
         }

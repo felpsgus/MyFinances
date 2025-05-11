@@ -25,7 +25,7 @@ public sealed class CreateUserHandler : IRequestHandler<CreateUserCommand, Guid>
 
         user = await _userRepository.AddAsync(user, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
-        
+
         return user.Id;
     }
 }

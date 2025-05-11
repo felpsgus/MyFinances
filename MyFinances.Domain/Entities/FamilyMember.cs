@@ -1,8 +1,11 @@
+using System.ComponentModel;
 using MyFinances.Domain.Enum;
+using MyFinances.Domain.Extensions;
 using MyFinances.Domain.Primitives;
 
 namespace MyFinances.Domain.Entities;
 
+[DisplayName("Family Member")]
 public class FamilyMember : Entity
 {
     private FamilyMember()
@@ -28,6 +31,10 @@ public class FamilyMember : Entity
 
     internal static FamilyMember Create(Guid userId, Guid familyId, bool isHead)
     {
+        userId.ThrowIfDefault(nameof(userId));
+        familyId.ThrowIfDefault(nameof(familyId));
+        isHead.ThrowIfDefault(nameof(isHead));
+
         return new FamilyMember(userId, familyId, isHead);
     }
 

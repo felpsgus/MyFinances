@@ -80,7 +80,7 @@ public class AddFamilyMemberHandlerTest
             .ReturnsAsync((Family?)null);
 
         // Act
-        Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
+        var act = async () => await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         await act.Should().ThrowAsync<NotFoundException>();
@@ -111,7 +111,7 @@ public class AddFamilyMemberHandlerTest
             .Returns(Guid.NewGuid());
 
         // Act
-        Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
+        var act = async () => await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         await act.Should().ThrowAsync<ValidationException>().WithMessage(ValidationMessages.User.NotHeadOfFamily);

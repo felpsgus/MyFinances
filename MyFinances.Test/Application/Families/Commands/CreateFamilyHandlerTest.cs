@@ -17,7 +17,8 @@ public class CreateFamilyHandlerTest
         _familyRepositoryMock = new Mock<IFamilyRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _userContextMock = new Mock<IUserContext>();
-        _handler = new CreateFamilyHandler(_familyRepositoryMock.Object, _unitOfWorkMock.Object, _userContextMock.Object);
+        _handler = new CreateFamilyHandler(_familyRepositoryMock.Object, _unitOfWorkMock.Object,
+            _userContextMock.Object);
     }
 
     [Fact]
@@ -30,12 +31,16 @@ public class CreateFamilyHandlerTest
         _familyRepositoryMock
             .Setup(repo => repo.AddAsync(It.IsAny<Family>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(fakeFamily);
+        _userContextMock
+            .Setup(uc => uc.UserId)
+            .Returns(fakeFamily.FamilyMembers.First().UserId);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        _familyRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Family>(), It.IsAny<CancellationToken>()), Times.Once);
+        _familyRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Family>(), It.IsAny<CancellationToken>()),
+            Times.Once);
         _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         _userContextMock.Verify(uc => uc.UserId, Times.Once);
         fakeFamily.FamilyMembers.Should().HaveCount(1);

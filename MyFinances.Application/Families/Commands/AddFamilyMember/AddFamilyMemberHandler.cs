@@ -36,7 +36,7 @@ public class AddFamilyMemberHandler : IRequestHandler<AddFamilyMemberCommand>
         var family = await _familyRepository.GetByIdAsync(request.FamilyId, cancellationToken);
 
         if (family == null)
-            throw new NotFoundException(nameof(Family), request.FamilyId.ToString());
+            throw new NotFoundException(typeof(Family), request.FamilyId);
 
         if (!family.FamilyMembers.Any(x => x.UserId == _userContext.UserId && x.IsHead))
             throw new ValidationException(ValidationMessages.User.NotHeadOfFamily);
@@ -48,7 +48,8 @@ public class AddFamilyMemberHandler : IRequestHandler<AddFamilyMemberCommand>
         {
             await _unitOfWork.BeginTransactionAsync(cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            await _emailService.SendEmailAsync(user.Email, "Family Member Added", $"You have been added to the family with name {family.Name}.");
+            await _emailService.SendEmailAsync(user.Email, "Family Member Added",
+                $"You have been added to the family with name {family.Name}.");
             await _unitOfWork.CommitTransactionAsync(cancellationToken);
         }
         catch (Exception e)

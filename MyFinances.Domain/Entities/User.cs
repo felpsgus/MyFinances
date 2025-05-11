@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using MyFinances.Domain.Enum;
+using MyFinances.Domain.Extensions;
 using MyFinances.Domain.Primitives;
 
 namespace MyFinances.Domain.Entities;
@@ -27,6 +28,11 @@ public class User : Entity
 
     public static User Create(string name, string email, DateOnly birthDate, string password)
     {
+        name.ThrowIfNullOrEmpty(nameof(name));
+        email.ThrowIfNullOrEmpty(nameof(email));
+        birthDate.ThrowIfDefault(nameof(birthDate));
+        password.ThrowIfNullOrEmpty(nameof(password));
+
         var user = new User
         {
             Name = name,
@@ -39,6 +45,8 @@ public class User : Entity
 
     public void UpdateToken(string refreshToken, DateTime? expiration = null)
     {
+        refreshToken.ThrowIfNullOrEmpty(nameof(refreshToken));
+
         RefreshToken = refreshToken;
         if (expiration != null)
             RefreshTokenExpiration = expiration;
@@ -57,6 +65,8 @@ public class User : Entity
 
     private static string ComputeHash(string password)
     {
+        password.ThrowIfNullOrEmpty(nameof(password));
+
         var hashedBytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
         var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
 

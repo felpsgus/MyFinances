@@ -19,10 +19,7 @@ public static class FamilyFakerHelper
     {
         var family = FamilyFaker.Generate();
 
-        for (int i = 0; i < numberOfMembers; i++)
-        {
-            family.AddFamilyMember(Guid.NewGuid());
-        }
+        for (var i = 0; i < numberOfMembers; i++) family.AddFamilyMember(Guid.NewGuid());
 
         return family;
     }
@@ -30,7 +27,7 @@ public static class FamilyFakerHelper
     public static List<Family> GetFakeFamilies(int numberOfFamilies)
     {
         var families = new List<Family>();
-        for (int i = 0; i < numberOfFamilies; i++)
+        for (var i = 0; i < numberOfFamilies; i++)
         {
             var family = GetFakeFamily();
             foreach (var familyMember in family.FamilyMembers)
@@ -38,6 +35,7 @@ public static class FamilyFakerHelper
                 familyMember.User = UserFakerHelper.GetFakeUser();
                 familyMember.UserId = familyMember.User.Id;
             }
+
             families.Add(family);
         }
 

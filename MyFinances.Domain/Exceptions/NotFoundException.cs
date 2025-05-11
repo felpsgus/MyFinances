@@ -1,14 +1,28 @@
+using MyFinances.Domain.Extensions;
+
 namespace MyFinances.Domain.Exceptions;
 
-public class NotFoundException : Exception
+public class NotFoundException : DomainException
 {
-    public NotFoundException(string entity, string id)
+    public NotFoundException(Type type, Guid id) : this(type.GetDisplayName(), id.ToString())
+    {
+    }
+
+    public NotFoundException(Type type) : this(type.GetDisplayName())
+    {
+    }
+
+    private NotFoundException(string entity, string id)
         : base($"{entity} with ID {id} not found.")
     {
     }
 
-    public NotFoundException(string entity)
+    private NotFoundException(string entity)
         : base($"{entity} not found.")
     {
     }
+
+    public override int StatusCode => 404;
+
+    public override string Title => "Not found";
 }

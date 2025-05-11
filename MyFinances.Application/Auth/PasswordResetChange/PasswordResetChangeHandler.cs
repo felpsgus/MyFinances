@@ -27,7 +27,7 @@ public class PasswordResetChangeHandler : IRequestHandler<PasswordResetChangeCom
 
         var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
         if (user == null)
-            throw new NotFoundException(nameof(User));
+            throw new NotFoundException(typeof(User));
 
         user.UpdatePassword(request.Password);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

@@ -41,12 +41,9 @@ public class NamespaceRepository : INamespaceRepository
         return await Query().FirstOrDefaultAsync(n => n.Id == id, cancellationToken);
     }
 
-    public async Task Delete(Guid namespaceId, CancellationToken cancellationToken = default)
+    public Namespace Delete(Namespace @namespace, CancellationToken cancellationToken = default)
     {
-        var @namespace = await GetByIdAsync(namespaceId, cancellationToken);
-        if (@namespace == null)
-            throw new NotFoundException(nameof(Namespace), namespaceId.ToString());
-
         _dbContext.Namespaces.Remove(@namespace);
+        return @namespace;
     }
 }

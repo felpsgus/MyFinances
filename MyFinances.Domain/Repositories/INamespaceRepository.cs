@@ -10,5 +10,5 @@ public interface INamespaceRepository
 
     Task<Namespace?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task Delete(Guid namespaceId, CancellationToken cancellationToken = default);
+    Namespace Delete(Namespace @namespace, CancellationToken cancellationToken = default);
 }

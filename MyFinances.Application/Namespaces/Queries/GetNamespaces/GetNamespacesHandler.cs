@@ -13,7 +13,8 @@ public class GetNamespacesHandler : IRequestHandler<GetNamespacesQuery, List<Nam
         _namespaceRepository = namespaceRepository;
     }
 
-    public async Task<List<NamespaceItemViewModel>> Handle(GetNamespacesQuery request, CancellationToken cancellationToken)
+    public async Task<List<NamespaceItemViewModel>> Handle(GetNamespacesQuery request,
+        CancellationToken cancellationToken)
     {
         var namespaces = await _namespaceRepository.GetAllAsync(cancellationToken);
         return namespaces.Select(n => (NamespaceItemViewModel)n).ToList();

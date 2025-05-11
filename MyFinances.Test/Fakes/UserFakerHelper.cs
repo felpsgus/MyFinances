@@ -15,5 +15,8 @@ public static class UserFakerHelper
             )
         );
 
-    public static User GetFakeUser() => UserFaker.Generate();
+    public static User GetFakeUser()
+    {
+        return UserFaker.Generate();
+    }
 }

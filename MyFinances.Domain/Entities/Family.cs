@@ -1,4 +1,5 @@
 using MyFinances.Domain.Exceptions;
+using MyFinances.Domain.Extensions;
 using MyFinances.Domain.Primitives;
 
 namespace MyFinances.Domain.Entities;
@@ -17,7 +18,9 @@ public class Family : AuditEntity
 
     public static Family Create(string name)
     {
-        return new Family()
+        name.ThrowIfNullOrEmpty(nameof(name));
+
+        return new Family
         {
             Name = name
         };
@@ -25,15 +28,22 @@ public class Family : AuditEntity
 
     public void AddFamilyMember(Guid userId)
     {
+        userId.ThrowIfDefault(nameof(userId));
+
+        if (FamilyMembers.Any(fm => fm.UserId == userId))
+            throw new AlreadyExistsException(typeof(FamilyMember), userId);
+
         var familyMember = FamilyMember.Create(userId, Id, FamilyMembers.Count == 0);
         _familyMembers.Add(familyMember);
     }
 
     public void RemoveFamilyMember(Guid userId)
     {
+        userId.ThrowIfDefault(nameof(userId));
+
         var familyMember = FamilyMembers.FirstOrDefault(fm => fm.UserId == userId);
 
-        if (familyMember == null) throw new NotFoundException(nameof(FamilyMember), userId.ToString());
+        if (familyMember == null) throw new NotFoundException(typeof(FamilyMember), userId);
 
         if (familyMember?.IsHead == true)
         {

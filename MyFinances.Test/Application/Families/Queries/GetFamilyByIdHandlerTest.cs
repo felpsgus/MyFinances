@@ -1,4 +1,5 @@
 using MyFinances.Application.Families.Queries.GetFamilyById;
+using MyFinances.Domain.Entities;
 using MyFinances.Domain.Exceptions;
 using MyFinances.Domain.Repositories;
 
@@ -30,7 +31,8 @@ public class GetFamilyByIdHandlerTest
         var result = await _getFamilyByIdHandler.Handle(query, CancellationToken.None);
 
         // Assert
-        _familyRepositoryMock.Verify(repo => repo.GetByIdAsync(fakeFamily.Id, It.IsAny<CancellationToken>()), Times.Once);
+        _familyRepositoryMock.Verify(repo => repo.GetByIdAsync(fakeFamily.Id, It.IsAny<CancellationToken>()),
+            Times.Once);
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(fakeFamily);
     }
@@ -44,7 +46,7 @@ public class GetFamilyByIdHandlerTest
 
         _familyRepositoryMock
             .Setup(repo => repo.GetByIdAsync(familyId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Domain.Entities.Family?)null);
+            .ReturnsAsync((Family?)null);
 
         // Act
         Func<Task> act = () => _getFamilyByIdHandler.Handle(query, CancellationToken.None);
