@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
 using MyFinances.Api.Interfaces;
 using MyFinances.Application.Users.Commands.CreateUser;
 using MyFinances.Application.Users.Queries.GetUserById;
@@ -11,7 +12,7 @@ public class UsersEndpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("users").WithGroupName("Users");
+        var group = app.MapGroup("users").WithTags("Users");
 
         group.MapPost("", async (CreateUserCommand request, ISender sender) =>
             {
@@ -20,7 +21,12 @@ public class UsersEndpoints : IEndpoint
             })
             .Produces<Guid>()
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-            .AllowAnonymous();
+            .AllowAnonymous()
+            .WithOpenApi(options => new OpenApiOperation(options)
+            {
+                Summary = "Create User",
+                Description = "Create a new user.",
+            });
 
         group.MapGet("", async (ISender sender) =>
             {
@@ -28,6 +34,11 @@ public class UsersEndpoints : IEndpoint
                 return Results.Ok(result);
             })
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
-            .Produces<UserViewModel>();
+            .Produces<UserViewModel>()
+            .WithOpenApi(options => new OpenApiOperation(options)
+            {
+                Summary = "Get User",
+                Description = "Get user details based on the token.",
+            });
     }
 }

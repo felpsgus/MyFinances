@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
 using MyFinances.Api.Interfaces;
 using MyFinances.Application.Families.Commands.AcceptFamilyMembership;
 using MyFinances.Application.Families.Commands.AddFamilyMember;
@@ -16,7 +17,7 @@ public class FamiliesEndpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("families").WithGroupName("Families");
+        var group = app.MapGroup("families").WithTags("Families");
 
         group.MapPost("", async (CreateFamilyCommand command, ISender sender) =>
             {
@@ -24,7 +25,12 @@ public class FamiliesEndpoints : IEndpoint
                 return Results.Created($"/families/{result}", result);
             })
             .Produces<Guid>()
-            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest);
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .WithOpenApi(options => new OpenApiOperation(options)
+            {
+                Summary = "Create Family",
+                Description = "Create a new family.",
+            });
 
         group.MapGet("{id:guid}", async (Guid id, ISender sender) =>
             {
@@ -32,7 +38,12 @@ public class FamiliesEndpoints : IEndpoint
                 return Results.Ok(result);
             })
             .Produces<FamilyViewModel>()
-            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithOpenApi(options => new OpenApiOperation(options)
+            {
+                Summary = "Get Family",
+                Description = "Get family details by ID.",
+            });
 
         group.MapPost("{id:guid}/add-member", async (Guid id, AddFamilyMemberCommand command, ISender sender) =>
             {
@@ -42,7 +53,12 @@ public class FamiliesEndpoints : IEndpoint
             })
             .Produces(StatusCodes.Status204NoContent)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithOpenApi(options => new OpenApiOperation(options)
+            {
+                Summary = "Add Family Member",
+                Description = "Add a member to the family.",
+            });
 
         group.MapPost("{id:guid}/remove-member", async (Guid id, RemoveFamilyMemberCommand command, ISender sender) =>
             {
@@ -52,7 +68,12 @@ public class FamiliesEndpoints : IEndpoint
             })
             .Produces(StatusCodes.Status204NoContent)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithOpenApi(options => new OpenApiOperation(options)
+            {
+                Summary = "Remove Family Member",
+                Description = "Remove a member from the family.",
+            });
 
         group.MapGet("", async (ISender sender) =>
             {
@@ -60,7 +81,12 @@ public class FamiliesEndpoints : IEndpoint
                 return Results.Ok(result);
             })
             .Produces<List<FamilyViewModel>>()
-            .Produces(StatusCodes.Status204NoContent);
+            .Produces(StatusCodes.Status204NoContent)
+            .WithOpenApi(options => new OpenApiOperation(options)
+            {
+                Summary = "Get All Families",
+                Description = "Get a list of all families.",
+            });
 
         group.MapPost("{id:guid}/accept-membership", async (Guid id, ISender sender) =>
             {
@@ -68,7 +94,12 @@ public class FamiliesEndpoints : IEndpoint
                 return Results.NoContent();
             })
             .Produces(StatusCodes.Status204NoContent)
-            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithOpenApi(options => new OpenApiOperation(options)
+            {
+                Summary = "Accept Family Membership",
+                Description = "Accept a family membership invitation.",
+            });
 
         group.MapPost("{id:guid}/refuse-membership", async (Guid id, ISender sender) =>
             {
@@ -76,6 +107,11 @@ public class FamiliesEndpoints : IEndpoint
                 return Results.NoContent();
             })
             .Produces(StatusCodes.Status204NoContent)
-            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithOpenApi(options => new OpenApiOperation(options)
+            {
+                Summary = "Refuse Family Membership",
+                Description = "Refuse a family membership invitation.",
+            });
     }
 }

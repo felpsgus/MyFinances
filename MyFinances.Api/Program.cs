@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http.Json;
 using Microsoft.OpenApi.Models;
 using MyFinances.Api;
 using MyFinances.Api.Endpoints;
+using MyFinances.Api.Filters;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,10 +60,14 @@ builder.Services.AddSwaggerGen(options =>
 
     options.TagActionsBy(api => new[] { api.GroupName });
 
-    options.DocInclusionPredicate((name, api) => true);
+    options.MapType<DateOnly>(() => new OpenApiSchema
+    {
+        Type = "string",
+        Format = "date",
+        Example = OpenApiAnyFactory.CreateFromJson($"\"{DateTime.UtcNow:yyyy-MM-dd}\"")
+    });
 
-    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    options.SchemaFilter<StringEnumSchemaFilter>();
 });
 
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
