@@ -14,7 +14,7 @@ public class Family : AuditEntity
 
     public string Name { get; private set; } = string.Empty;
 
-    public IReadOnlyList<FamilyMember> FamilyMembers => _familyMembers;
+    public IReadOnlyCollection<FamilyMember> FamilyMembers => _familyMembers.AsReadOnly();
 
     public static Family Create(string name)
     {
