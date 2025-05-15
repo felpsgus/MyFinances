@@ -1,5 +1,4 @@
 using MediatR;
-using MyFinances.Application.Namespaces.Views;
 using MyFinances.Domain.Entities;
 using MyFinances.Domain.Exceptions;
 using MyFinances.Domain.Repositories;

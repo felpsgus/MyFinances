@@ -6,7 +6,6 @@ using MyFinances.Application.Namespaces.Tags.Commands.CreateTag;
 using MyFinances.Application.Namespaces.Tags.Commands.DeleteTag;
 using MyFinances.Application.Namespaces.Tags.Commands.UpdateTag;
 using MyFinances.Application.Namespaces.Tags.Queries.GetTags;
-using MyFinances.Application.Namespaces.Views;
 
 namespace MyFinances.Api.Endpoints;
 
@@ -53,7 +52,7 @@ public class NamespaceTagsEndpoints : IEndpoint
                 var result = await sender.Send(new GetTagsQuery(namespaceId));
                 return Results.Ok(result);
             })
-            .Produces<List<TagViewModel>>()
+            .Produces<List<GetTagsResponse>>()
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .WithOpenApi(options => new OpenApiOperation(options)
             {

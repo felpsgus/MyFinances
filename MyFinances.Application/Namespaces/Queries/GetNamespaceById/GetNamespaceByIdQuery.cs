@@ -1,5 +1,4 @@
 using MediatR;
-using MyFinances.Application.Namespaces.Views;
 
 namespace MyFinances.Application.Namespaces.Queries.GetNamespaceById;
 

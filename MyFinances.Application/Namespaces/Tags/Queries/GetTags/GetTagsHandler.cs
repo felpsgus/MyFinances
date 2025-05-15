@@ -1,10 +1,9 @@
 using MediatR;
-using MyFinances.Application.Namespaces.Views;
 using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Application.Namespaces.Tags.Queries.GetTags;
 
-public class GetTagsHandler : IRequestHandler<GetTagsQuery, List<TagViewModel>>
+public class GetTagsHandler : IRequestHandler<GetTagsQuery, List<GetTagsResponse>>
 {
     private readonly INamespaceRepository _namespaceRepository;
 
@@ -13,9 +12,9 @@ public class GetTagsHandler : IRequestHandler<GetTagsQuery, List<TagViewModel>>
         _namespaceRepository = namespaceRepository;
     }
 
-    public async Task<List<TagViewModel>> Handle(GetTagsQuery request, CancellationToken cancellationToken)
+    public async Task<List<GetTagsResponse>> Handle(GetTagsQuery request, CancellationToken cancellationToken)
     {
         return await _namespaceRepository.GetTagsAsync(request.NamespaceId, cancellationToken)
-            .ContinueWith(t => t.Result.Select(tag => (TagViewModel)tag).ToList(), cancellationToken);
+            .ContinueWith(t => t.Result.Select(tag => (GetTagsResponse)tag).ToList(), cancellationToken);
     }
 }

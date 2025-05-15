@@ -7,7 +7,6 @@ using MyFinances.Application.Namespaces.Commands.DeleteNamespace;
 using MyFinances.Application.Namespaces.Commands.UpdateNamespace;
 using MyFinances.Application.Namespaces.Queries.GetNamespaceById;
 using MyFinances.Application.Namespaces.Queries.GetNamespaces;
-using MyFinances.Application.Namespaces.Views;
 
 namespace MyFinances.Api.Endpoints;
 
