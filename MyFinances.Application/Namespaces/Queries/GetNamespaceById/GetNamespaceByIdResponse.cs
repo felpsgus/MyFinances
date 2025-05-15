@@ -1,9 +1,9 @@
 using MyFinances.Domain.Entities;
 using MyFinances.Domain.Enum;
 
-namespace MyFinances.Application.Namespaces.Views;
+namespace MyFinances.Application.Namespaces.Queries.GetNamespaceById;
 
-public class NamespaceItemViewModel
+public class GetNamespaceByIdResponse
 {
     public Guid Id { get; set; }
 
@@ -15,9 +15,9 @@ public class NamespaceItemViewModel
 
     public Guid? FamilyId { get; set; }
 
-    public static implicit operator NamespaceItemViewModel(Namespace @namespace)
+    public static implicit operator GetNamespaceByIdResponse(Namespace @namespace)
     {
-        return new NamespaceItemViewModel
+        return new GetNamespaceByIdResponse
         {
             Id = @namespace.Id,
             Name = @namespace.Name,

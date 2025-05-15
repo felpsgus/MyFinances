@@ -4,7 +4,7 @@ using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Application.Namespaces.Queries.GetNamespaces;
 
-public class GetNamespacesHandler : IRequestHandler<GetNamespacesQuery, List<NamespaceViewModel>>
+public class GetNamespacesHandler : IRequestHandler<GetNamespacesQuery, List<GetNamespacesResponse>>
 {
     private readonly INamespaceRepository _namespaceRepository;
 
@@ -13,10 +13,10 @@ public class GetNamespacesHandler : IRequestHandler<GetNamespacesQuery, List<Nam
         _namespaceRepository = namespaceRepository;
     }
 
-    public async Task<List<NamespaceViewModel>> Handle(GetNamespacesQuery request,
+    public async Task<List<GetNamespacesResponse>> Handle(GetNamespacesQuery request,
         CancellationToken cancellationToken)
     {
         var namespaces = await _namespaceRepository.GetAllAsync(cancellationToken);
-        return namespaces.Select(n => (NamespaceViewModel)n).ToList();
+        return namespaces.Select(n => (GetNamespacesResponse)n).ToList();
     }
 }

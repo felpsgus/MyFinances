@@ -6,7 +6,7 @@ using MyFinances.Domain.Repositories;
 
 namespace MyFinances.Application.Namespaces.Queries.GetNamespaceById;
 
-public class GetNamespaceByIdHandler : IRequestHandler<GetNamespaceByIdQuery, NamespaceItemViewModel?>
+public class GetNamespaceByIdHandler : IRequestHandler<GetNamespaceByIdQuery, GetNamespaceByIdResponse?>
 {
     private readonly INamespaceRepository _namespaceRepository;
 
@@ -15,7 +15,7 @@ public class GetNamespaceByIdHandler : IRequestHandler<GetNamespaceByIdQuery, Na
         _namespaceRepository = namespaceRepository;
     }
 
-    public async Task<NamespaceItemViewModel?> Handle(GetNamespaceByIdQuery request,
+    public async Task<GetNamespaceByIdResponse?> Handle(GetNamespaceByIdQuery request,
         CancellationToken cancellationToken)
     {
         var namespaceItem = await _namespaceRepository.GetByIdAsync(request.NamespaceId, cancellationToken);

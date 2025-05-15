@@ -1,5 +1,4 @@
 using MyFinances.Application.Namespaces.Queries.GetNamespaces;
-using MyFinances.Application.Namespaces.Views;
 using MyFinances.Domain.Entities;
 using MyFinances.Domain.Repositories;
 
@@ -37,7 +36,7 @@ public class GetNamespacesHandlerTest
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().BeOfType<List<NamespaceItemViewModel>>();
+        result.Should().BeOfType<List<GetNamespacesResponse>>();
         result.Should().HaveCount(2);
     }
 }

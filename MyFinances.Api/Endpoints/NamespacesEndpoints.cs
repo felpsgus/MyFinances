@@ -64,7 +64,7 @@ public class NamespacesEndpoints : IEndpoint
                 var result = await sender.Send(new GetNamespacesQuery());
                 return Results.Ok(result);
             })
-            .Produces<List<NamespaceViewModel>>()
+            .Produces<List<GetNamespacesResponse>>()
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .WithOpenApi(options => new OpenApiOperation(options)
             {
@@ -77,7 +77,7 @@ public class NamespacesEndpoints : IEndpoint
                 var result = await sender.Send(new GetNamespaceByIdQuery(namespaceId));
                 return Results.Ok(result);
             })
-            .Produces<NamespaceItemViewModel>()
+            .Produces<GetNamespaceByIdResponse>()
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithOpenApi(options => new OpenApiOperation(options)
