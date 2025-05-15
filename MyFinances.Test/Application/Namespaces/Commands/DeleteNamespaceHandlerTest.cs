@@ -30,7 +30,7 @@ public class DeleteNamespaceHandlerTest
             .ReturnsAsync(@namespace);
         _namespaceRepository
             .Setup(repo => repo.Delete(@namespace))
-            .Callback((Namespace n, CancellationToken ct) => n.DeleteEntity())
+            .Callback((Namespace n) => n.DeleteEntity())
             .Returns(@namespace);
 
         // Act

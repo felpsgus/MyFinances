@@ -33,7 +33,6 @@ public class FamilyMember : Entity
     {
         userId.ThrowIfDefault(nameof(userId));
         familyId.ThrowIfDefault(nameof(familyId));
-        isHead.ThrowIfDefault(nameof(isHead));
 
         return new FamilyMember(userId, familyId, isHead);
     }

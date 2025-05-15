@@ -44,7 +44,7 @@ public class FamilyTest
 
         // Assert
         family.FamilyMembers.Should().HaveCount(2);
-        family.FamilyMembers[1].UserId.Should().Be(userId);
+        family.FamilyMembers.Should().ContainSingle(x => x.UserId == userId);
     }
 
     [Fact]
