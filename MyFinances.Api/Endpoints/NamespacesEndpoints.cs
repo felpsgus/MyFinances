@@ -64,7 +64,7 @@ public class NamespacesEndpoints : IEndpoint
                 var result = await sender.Send(new GetNamespacesQuery());
                 return Results.Ok(result);
             })
-            .Produces<List<NamespaceItemViewModel>>()
+            .Produces<List<NamespaceViewModel>>()
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .WithOpenApi(options => new OpenApiOperation(options)
             {
