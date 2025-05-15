@@ -29,7 +29,7 @@ public class DeleteNamespaceHandlerTest
             .Setup(repo => repo.GetByIdAsync(command.NamespaceId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(@namespace);
         _namespaceRepository
-            .Setup(repo => repo.Delete(@namespace, It.IsAny<CancellationToken>()))
+            .Setup(repo => repo.Delete(@namespace))
             .Callback((Namespace n, CancellationToken ct) => n.DeleteEntity())
             .Returns(@namespace);
 
@@ -37,7 +37,7 @@ public class DeleteNamespaceHandlerTest
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        _namespaceRepository.Verify(x => x.Delete(@namespace, It.IsAny<CancellationToken>()), Times.Once);
+        _namespaceRepository.Verify(x => x.Delete(@namespace), Times.Once);
         _unitOfWork.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         @namespace.Deleted.Should().BeTrue();
     }

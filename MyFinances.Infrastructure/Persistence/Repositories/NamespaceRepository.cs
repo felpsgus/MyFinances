@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyFinances.Application.Abstractions.Interfaces;
 using MyFinances.Domain.Entities;
-using MyFinances.Domain.Exceptions;
 using MyFinances.Domain.Repositories;
 using MyFinances.Infrastructure.Persistence.Context;
 
@@ -38,10 +37,14 @@ public class NamespaceRepository : INamespaceRepository
 
     public async Task<Namespace?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await Query().FirstOrDefaultAsync(n => n.Id == id, cancellationToken);
+        return await Query()
+            .Include(n => n.Tags)
+            .Include(n => n.Expenses)
+            .Include(n => n.Debts)
+            .FirstOrDefaultAsync(n => n.Id == id, cancellationToken);
     }
 
-    public Namespace Delete(Namespace @namespace, CancellationToken cancellationToken = default)
+    public Namespace Delete(Namespace @namespace)
     {
         _dbContext.Namespaces.Remove(@namespace);
         return @namespace;

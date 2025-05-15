@@ -22,7 +22,7 @@ public class DeleteNamespaceHandler : IRequestHandler<DeleteNamespaceCommand>
         if (@namespace == null)
             throw new NotFoundException(typeof(Namespace), request.NamespaceId);
 
-        _namespaceRepository.Delete(@namespace, cancellationToken);
+        _namespaceRepository.Delete(@namespace);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }
