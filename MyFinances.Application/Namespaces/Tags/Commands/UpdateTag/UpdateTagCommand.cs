@@ -5,6 +5,13 @@ namespace MyFinances.Application.Namespaces.Tags.Commands.UpdateTag;
 
 public record UpdateTagCommand : ICommand
 {
+    public UpdateTagCommand(Guid namespaceId, Guid tagId, string name)
+    {
+        NamespaceId = namespaceId;
+        TagId = tagId;
+        Name = name;
+    }
+
     [JsonIgnore]
     public Guid TagId { get; init; }
 

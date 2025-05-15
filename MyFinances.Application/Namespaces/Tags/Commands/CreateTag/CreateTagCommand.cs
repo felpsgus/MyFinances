@@ -5,6 +5,12 @@ namespace MyFinances.Application.Namespaces.Tags.Commands.CreateTag;
 
 public record CreateTagCommand : ICommand
 {
+    public CreateTagCommand(Guid namespaceId, string name)
+    {
+        NamespaceId = namespaceId;
+        Name = name;
+    }
+
     public string Name { get; init; } = string.Empty;
 
     [JsonIgnore]
