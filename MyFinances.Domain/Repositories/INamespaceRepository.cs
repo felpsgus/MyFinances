@@ -10,6 +10,7 @@ public interface INamespaceRepository
 
     Task<Namespace?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Namespace Delete(Namespace @namespace, CancellationToken cancellationToken = default);
     Namespace Delete(Namespace @namespace);
+
+    Task<IReadOnlyCollection<Tag>> GetTagsAsync(Guid namespaceId, CancellationToken cancellationToken = default);
 }

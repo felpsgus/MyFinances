@@ -49,4 +49,15 @@ public class NamespaceRepository : INamespaceRepository
         _dbContext.Namespaces.Remove(@namespace);
         return @namespace;
     }
+
+    public async Task<IReadOnlyCollection<Tag>> GetTagsAsync(Guid namespaceId,
+        CancellationToken cancellationToken = default)
+    {
+        return await Query()
+            .Include(n => n.Tags)
+            .Where(n => n.Id == namespaceId)
+            .SelectMany(n => n.Tags)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+    }
 }
