@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyFinances.Infrastructure.Persistence.Context;
 
@@ -12,9 +13,11 @@ using MyFinances.Infrastructure.Persistence.Context;
 namespace MyFinances.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(MyFinancesDbContext))]
-    partial class MyFinancesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250516183529_8")]
+    partial class _8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,14 +182,9 @@ namespace MyFinances.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("ExpenseId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TagId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("TagId", "ExpenseId");
 
                     b.HasIndex("ExpenseId");
-
-                    b.HasIndex("TagId1");
 
                     b.ToTable("ExpenseTag", (string)null);
                 });
@@ -547,14 +545,6 @@ namespace MyFinances.Infrastructure.Persistence.Migrations
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("MyFinances.Domain.Entities.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("MyFinances.Domain.Entities.Family", b =>

@@ -42,8 +42,5 @@ public class ExpenseMap : BaseAuditMap<Expense>
 
         builder.Property(e => e.InstallmentNumber)
             .IsRequired(false);
-
-        builder.HasMany(e => e.Tags)
-            .WithMany();
     }
 }

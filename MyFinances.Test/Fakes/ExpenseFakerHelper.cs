@@ -5,7 +5,7 @@ namespace MyFinances.Test.Fakes;
 
 public static class ExpenseFakerHelper
 {
-    public static Expense GetUnpaidFakeExpense(Guid namespaceId)
+    public static Expense GetFakeExpense(Guid namespaceId)
     {
         return new Faker<Expense>()
             .CustomInstantiator(f => Expense.Create(

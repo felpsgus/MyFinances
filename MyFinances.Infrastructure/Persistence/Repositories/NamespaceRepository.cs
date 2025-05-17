@@ -56,7 +56,6 @@ public class NamespaceRepository : INamespaceRepository
             .Include(n => n.Tags)
             .Where(n => n.Id == namespaceId)
             .SelectMany(n => n.Tags)
-            .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 }

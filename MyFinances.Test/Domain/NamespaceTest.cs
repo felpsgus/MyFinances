@@ -211,7 +211,7 @@ public class NamespaceTest
         // Arrange
         var user = UserFakerHelper.GetFakeUser();
         var @namespace = NamespaceFakerHelper.GetFakePersonalNamespace(user.Id);
-        var expense = ExpenseFakerHelper.GetUnpaidFakeExpense(@namespace.Id);
+        var expense = ExpenseFakerHelper.GetFakeExpense(@namespace.Id);
 
         // Act
         @namespace.AddExpense(expense);
@@ -238,7 +238,7 @@ public class NamespaceTest
         // Arrange
         var user = UserFakerHelper.GetFakeUser();
         var @namespace = NamespaceFakerHelper.GetFakePersonalNamespace(user.Id);
-        var expense = ExpenseFakerHelper.GetUnpaidFakeExpense(Guid.NewGuid());
+        var expense = ExpenseFakerHelper.GetFakeExpense(Guid.NewGuid());
 
         // Act & Assert
         FluentActions.Invoking(() => @namespace.AddExpense(expense))
@@ -251,7 +251,7 @@ public class NamespaceTest
         // Arrange
         var user = UserFakerHelper.GetFakeUser();
         var @namespace = NamespaceFakerHelper.GetFakePersonalNamespace(user.Id);
-        var expense = ExpenseFakerHelper.GetUnpaidFakeExpense(@namespace.Id);
+        var expense = ExpenseFakerHelper.GetFakeExpense(@namespace.Id);
         @namespace.AddExpense(expense);
 
         // Act & Assert
@@ -265,7 +265,7 @@ public class NamespaceTest
         // Arrange
         var user = UserFakerHelper.GetFakeUser();
         var @namespace = NamespaceFakerHelper.GetFakePersonalNamespace(user.Id);
-        var expense = ExpenseFakerHelper.GetUnpaidFakeExpense(@namespace.Id);
+        var expense = ExpenseFakerHelper.GetFakeExpense(@namespace.Id);
         @namespace.AddExpense(expense);
 
         // Act
@@ -283,7 +283,7 @@ public class NamespaceTest
         // Arrange
         var user = UserFakerHelper.GetFakeUser();
         var @namespace = NamespaceFakerHelper.GetFakePersonalNamespace(user.Id);
-        var expense = ExpenseFakerHelper.GetUnpaidFakeExpense(@namespace.Id);
+        var expense = ExpenseFakerHelper.GetFakeExpense(@namespace.Id);
         @namespace.AddExpense(expense);
 
         // Act & Assert

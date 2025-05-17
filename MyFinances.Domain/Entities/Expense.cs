@@ -6,7 +6,7 @@ namespace MyFinances.Domain.Entities;
 
 public class Expense : AuditEntity
 {
-    private readonly List<Tag> _tags = [];
+    private readonly List<ExpenseTag> _expenseTags = [];
 
     private Expense()
     {
@@ -34,7 +34,7 @@ public class Expense : AuditEntity
 
     public int? InstallmentNumber { get; private set; }
 
-    public IReadOnlyCollection<Tag> Tags => _tags.AsReadOnly();
+    public IReadOnlyCollection<Tag> Tags => _expenseTags.Select(et => et.Tag).ToList().AsReadOnly();
 
     public static Expense Create(
         string name,
@@ -78,7 +78,7 @@ public class Expense : AuditEntity
         foreach (var tag in tags)
         {
             tag.ThrowIfNull(nameof(tag));
-            expense._tags.Add(tag);
+            expense._expenseTags.Add(ExpenseTag.Create(tag.Id, expense.Id));
         }
 
         return expense;
@@ -120,17 +120,18 @@ public class Expense : AuditEntity
         if (tags == null)
             return;
 
-        var tagsToRemove = _tags
-            .Where(t => tags.All(tag => tag.Id != t.Id))
+        var tagsToRemove = _expenseTags
+            .Where(t => tags.All(tag => tag.Id != t.TagId))
             .ToList();
 
-        foreach (var tag in tagsToRemove) _tags.Remove(tag);
+        foreach (var tag in tagsToRemove) _expenseTags.Remove(tag);
 
         var tagsToAdd = tags
-            .Where(tag => _tags.All(t => t.Id != tag.Id))
+            .Where(tag => _expenseTags.All(t => t.TagId != tag.Id))
+            .Select(tag => ExpenseTag.Create(tag.Id, Id))
             .ToList();
 
-        _tags.AddRange(tagsToAdd);
+        _expenseTags.AddRange(tagsToAdd);
     }
 
     public void Pay(DateOnly paymentDate = new())
