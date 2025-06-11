@@ -14,7 +14,9 @@ public class CreateExpenseHandlerTest
     {
         _mockNamespaceRepository = new Mock<INamespaceRepository>();
         _mockUnitOfWork = new Mock<IUnitOfWork>();
-        _handler = new CreateExpenseHandler(_mockNamespaceRepository.Object, _mockUnitOfWork.Object);
+        var mockUserRepository = new Mock<IUserRepository>();
+        _handler = new CreateExpenseHandler(_mockNamespaceRepository.Object, _mockUnitOfWork.Object,
+            mockUserRepository.Object);
     }
 
     [Fact]
@@ -39,7 +41,8 @@ public class CreateExpenseHandlerTest
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        _mockNamespaceRepository.Verify(x => x.GetByIdAsync(command.NamespaceId, It.IsAny<CancellationToken>()), Times.Once);
+        _mockNamespaceRepository.Verify(x => x.GetByIdAsync(command.NamespaceId, It.IsAny<CancellationToken>()),
+            Times.Once);
         _mockUnitOfWork.Verify(x => x.BeginTransactionAsync(It.IsAny<CancellationToken>()), Times.Once);
         _mockUnitOfWork.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         _mockUnitOfWork.Verify(x => x.CommitTransactionAsync(It.IsAny<CancellationToken>()), Times.Once);

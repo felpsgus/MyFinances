@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using MyFinances.Domain.Extensions;
 using MyFinances.Domain.Primitives;
 using MyFinances.Domain.ValueObjects;
@@ -34,7 +35,9 @@ public class Expense : AuditEntity
 
     public int? InstallmentNumber { get; private set; }
 
-    public IReadOnlyCollection<Tag> Tags => _expenseTags.Select(et => et.Tag).ToList().AsReadOnly();
+    public IReadOnlyCollection<ExpenseTag> ExpenseTags => _expenseTags.AsReadOnly();
+    [NotMapped]
+    public IReadOnlyList<Tag> Tags => _expenseTags.Select(et => et.Tag).ToList().AsReadOnly();
 
     public static Expense Create(
         string name,
@@ -78,7 +81,7 @@ public class Expense : AuditEntity
         foreach (var tag in tags)
         {
             tag.ThrowIfNull(nameof(tag));
-            expense._expenseTags.Add(ExpenseTag.Create(tag.Id, expense.Id));
+            expense._expenseTags.Add(ExpenseTag.Create(tag, expense.Id));
         }
 
         return expense;
@@ -128,7 +131,7 @@ public class Expense : AuditEntity
 
         var tagsToAdd = tags
             .Where(tag => _expenseTags.All(t => t.TagId != tag.Id))
-            .Select(tag => ExpenseTag.Create(tag.Id, Id))
+            .Select(tag => ExpenseTag.Create(tag, Id))
             .ToList();
 
         _expenseTags.AddRange(tagsToAdd);

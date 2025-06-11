@@ -21,8 +21,8 @@ public class ExpenseTagMap : IEntityTypeConfiguration<ExpenseTag>
             .OnDelete(DeleteBehavior.Cascade);
 
         builder
-            .HasOne<Expense>()
-            .WithMany()
+            .HasOne(e => e.Expense)
+            .WithMany(e => e.ExpenseTags)
             .HasForeignKey(e => e.ExpenseId)
             .OnDelete(DeleteBehavior.Restrict);
     }

@@ -38,8 +38,9 @@ public class NamespaceRepository : INamespaceRepository
     public async Task<Namespace?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await Query()
-            .Include(n => n.Expenses)
+            .Include(n => n.Expenses).ThenInclude(e => e.ExpenseTags).ThenInclude(et => et.Tag)
             .Include(n => n.Debts)
+            .AsTracking()
             .FirstOrDefaultAsync(n => n.Id == id, cancellationToken);
     }
 

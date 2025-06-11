@@ -13,7 +13,7 @@ using MyFinances.Infrastructure.Persistence.Context;
 namespace MyFinances.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(MyFinancesDbContext))]
-    [Migration("20250516190238_9")]
+    [Migration("20250610014905_9")]
     partial class _9
     {
         /// <inheritdoc />
@@ -182,14 +182,9 @@ namespace MyFinances.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("ExpenseId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TagId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("TagId", "ExpenseId");
 
                     b.HasIndex("ExpenseId");
-
-                    b.HasIndex("TagId1");
 
                     b.ToTable("ExpenseTag", (string)null);
                 });
@@ -399,9 +394,6 @@ namespace MyFinances.Infrastructure.Persistence.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<Guid?>("ExpenseId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -420,8 +412,6 @@ namespace MyFinances.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("ExpenseId");
 
                     b.HasIndex("NamespaceId");
 
@@ -539,23 +529,19 @@ namespace MyFinances.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MyFinances.Domain.Entities.ExpenseTag", b =>
                 {
-                    b.HasOne("MyFinances.Domain.Entities.Expense", null)
-                        .WithMany()
+                    b.HasOne("MyFinances.Domain.Entities.Expense", "Expense")
+                        .WithMany("ExpenseTags")
                         .HasForeignKey("ExpenseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MyFinances.Domain.Entities.Tag", null)
+                    b.HasOne("MyFinances.Domain.Entities.Tag", "Tag")
                         .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyFinances.Domain.Entities.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Expense");
 
                     b.Navigation("Tag");
                 });
@@ -648,10 +634,6 @@ namespace MyFinances.Infrastructure.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("CreatedById");
 
-                    b.HasOne("MyFinances.Domain.Entities.Expense", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("ExpenseId");
-
                     b.HasOne("MyFinances.Domain.Entities.Namespace", null)
                         .WithMany("Tags")
                         .HasForeignKey("NamespaceId")
@@ -674,7 +656,7 @@ namespace MyFinances.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MyFinances.Domain.Entities.Expense", b =>
                 {
-                    b.Navigation("Tags");
+                    b.Navigation("ExpenseTags");
                 });
 
             modelBuilder.Entity("MyFinances.Domain.Entities.Family", b =>
