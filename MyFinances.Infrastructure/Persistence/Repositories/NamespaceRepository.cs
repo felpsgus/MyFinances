@@ -30,7 +30,7 @@ public class NamespaceRepository : INamespaceRepository
                         n.Family.FamilyMembers.Any(fm => fm.UserId == _userContext.UserId));
     }
 
-    public async Task<List<Namespace>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Namespace>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await Query().AsNoTracking().ToListAsync(cancellationToken);
     }

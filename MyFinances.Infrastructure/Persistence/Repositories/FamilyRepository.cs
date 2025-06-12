@@ -35,7 +35,7 @@ public class FamilyRepository : IFamilyRepository
         return await GetQueryable().FirstOrDefaultAsync(f => f.Id == familyId, cancellationToken);
     }
 
-    public async Task<List<Family>> GetAllFamiliesAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Family>> GetAllFamiliesAsync(CancellationToken cancellationToken = default)
     {
         return await GetQueryable().ToListAsync(cancellationToken);
     }
